@@ -81,6 +81,11 @@ body {
     mix-blend-mode: difference;
 }
 
+.cursor-glow,
+.cursor-dot {
+    transition: opacity 0.3s ease;
+}
+
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -621,4 +626,10 @@ footer {
         flex-direction: column;
         align-items: stretch;
     }
+}
+
+a:focus-visible {
+    outline: 2px dashed var(--accent-color);
+    outline-offset: 6px;
+    border-radius: 4px;
 }

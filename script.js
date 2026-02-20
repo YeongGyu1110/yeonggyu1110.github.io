@@ -21,6 +21,16 @@ function animate() {
 }
 animate();
 
+document.addEventListener('mouseleave', () => {
+    glow.style.opacity = '0';
+    dot.style.opacity = '0';
+});
+
+document.addEventListener('mouseenter', () => {
+    glow.style.opacity = '0.8';
+    dot.style.opacity = '1';
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const observerOptions = {
         threshold: 0.1,
