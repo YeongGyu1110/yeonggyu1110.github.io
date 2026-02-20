@@ -1,3 +1,18 @@
+/* 스크롤 기능은 유지하되, 스크롤 바만 숨기기 */
+html,
+body {
+    -ms-overflow-style: none;
+    /* ie, edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
+    /* 크롬, 사파리, 오페라, 엣지 */
+}
+
 :root {
     --bg-color: #080808;
     --text-main: #FFFFFF;
@@ -28,7 +43,16 @@ body {
     cursor: none;
     user-select: none;
     -webkit-user-select: none;
+
+    /* 스크롤은 살려두되, 스크롤 바만 시각적으로 없애기 */
+    /* -ms-overflow-style: none; */
+    /* scrollbar-width: none; */
 }
+
+/* 크롬 사파리 엣지 오페라에서 스크롤 바 숨기기. */
+/* body::-webkit-scrollbar { */
+/* display: none; */
+/* } */
 
 ::selection {
     background: var(--accent-color);
