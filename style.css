@@ -196,7 +196,7 @@ nav {
     animation: bounce 2s infinite;
 }
 
-.dna-marquee {
+.tech-marquee {
     width: 100%;
     background: var(--accent-color);
     color: #000;
@@ -369,7 +369,7 @@ nav {
     font-size: 0.95rem;
 }
 
-.section-likes {
+.section-skills {
     padding: 100px 10%;
     z-index: 1;
     position: relative;
