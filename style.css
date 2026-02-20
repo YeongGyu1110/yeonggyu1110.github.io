@@ -24,6 +24,14 @@ body::-webkit-scrollbar {
     --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+*,
+a,
+button,
+input,
+textarea {
+    cursor: none !important;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -40,7 +48,6 @@ body {
     font-family: 'Pretendard', sans-serif;
     overflow-x: hidden;
     line-height: 1.6;
-    cursor: none;
     user-select: none;
     -webkit-user-select: none;
 }
@@ -124,6 +131,11 @@ nav {
 
 .logo span {
     color: var(--accent-color);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .reveal-text,
