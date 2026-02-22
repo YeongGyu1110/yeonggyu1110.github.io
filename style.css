@@ -640,8 +640,30 @@ footer {
     }
 }
 
-a:focus-visible {
+a:focus-visible,
+button:focus-visible {
     outline: 2px dashed var(--accent-color);
     outline-offset: 6px;
     border-radius: 4px;
+}
+
+
+.lang-toggle-btn {
+    background: transparent;
+    border: 1px solid #333;
+    color: #666;
+    padding: 8px 16px;
+    margin-top: 15px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    letter-spacing: 1px;
+}
+
+.lang-toggle-btn:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    background: rgba(255, 107, 107, 0.1);
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.2);
 }
