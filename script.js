@@ -76,6 +76,10 @@ const translations = {
         ko: "텍스트 기반의 인터랙션을 넘어, HTML/CSS 및 React를 학습하며 시각적인 웹 프론트엔드 영역으로 기술 스택을 확장하고 있습니다.",
         en: "Moving beyond text-based interaction, I am learning HTML/CSS and React to expand my tech stack into the visual web frontend domain."
     },
+    skillSub: {
+        ko: "주력 개발 분야와 운용 가능한 기술 스택을 정의합니다.",
+        en: "Core capabilities and utilized stacks."
+    },
     skillCard1: {
         ko: "Discord.js 및 카카오톡 봇 개발 능력을 보유하고 있습니다.",
         en: "Capable of developing bots for Discord and KakaoTalk."
