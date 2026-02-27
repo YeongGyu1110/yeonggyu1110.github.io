@@ -137,5 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
             : "[ SWITCH LANGUAGE : KR ]";
 
         document.body.style.wordBreak = lang === 'ko' ? 'keep-all' : 'normal';
+        document.documentElement.lang = lang;
     }
 });
