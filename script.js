@@ -140,3 +140,42 @@ document.addEventListener('DOMContentLoaded', () => {
         document.documentElement.lang = lang;
     }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const archiveBanner = document.querySelector('.archive-banner');
+    const archiveGrid = document.querySelector('.archive-bg-grid');
+
+    if (archiveBanner && archiveGrid) {
+        let gridPosX = 0;
+        let gridPosY = 0;
+
+        let currentVelocity = 0.5;
+        const normalVelocity = 0.5;
+        const hoverVelocity = 1.5;
+
+        let isHoveringArchive = false;
+
+        archiveBanner.addEventListener('mouseenter', () => {
+            isHoveringArchive = true;
+        });
+
+        archiveBanner.addEventListener('mouseleave', () => {
+            isHoveringArchive = false;
+        });
+
+        function animateArchiveGrid() {
+            const targetVelocity = isHoveringArchive ? hoverVelocity : normalVelocity;
+
+            currentVelocity += (targetVelocity - currentVelocity) * 0.05;
+
+            gridPosX = (gridPosX - currentVelocity) % 40;
+            gridPosY = (gridPosY + currentVelocity) % 40;
+
+            archiveGrid.style.backgroundPosition = `${gridPosX}px ${gridPosY}px`;
+
+            requestAnimationFrame(animateArchiveGrid);
+        }
+
+        animateArchiveGrid();
+    }
+});
