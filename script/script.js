@@ -108,10 +108,6 @@ const translations = {
         ko: "아카이브 인덱스를 불러오는 중입니다. 계속하려면 엔터 키를 누르세요.",
         en: "Loading archive index... Press [ENTER] to initialize connection."
     },
-    snsSub: {
-        ko: "협업과 소통을 위한 연결 채널",
-        en: "Open for collaboration."
-    },
     projectHeroDesc: {
         ko: "연구 및 개발된 모든 시스템 로직과 인터페이스의 기록.<br>시각화된 데이터를 통해 개발자의 사고 과정을 추적합니다.",
         en: "A record of all researched and developed system logics and interfaces.<br>Trace the developer's thought process through visualized data."
@@ -172,7 +168,7 @@ const translations = {
         ko: "// 검색 결과와 일치하는 항목을 찾을 수 없습니다.<br>// 어림도 없지!",
         en: "// No items match your search.<br>NOT A CHANCE."
     },
-    archiveInnerSub: {
+    ProjectArchiveInnerSub: {
         ko: "클릭하면 전체 프로젝트 목록을 닫고 홈 화면으로 돌아갑니다.",
         en: "Click to close the project archive and return to the main home screen."
     },
