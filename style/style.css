@@ -1,16 +1,18 @@
-/* 스크롤 기능은 유지하되, 스크롤 바만 숨기기 */
 html,
 body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
+
     -ms-overflow-style: none;
-    /* ie, edge */
     scrollbar-width: none;
-    /* Firefox */
+    scroll-behavior: smooth;
 }
 
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
     display: none;
-    /* 크롬, 사파리, 오페라, 엣지 */
 }
 
 :root {
@@ -827,6 +829,16 @@ footer {
 }
 
 @media (max-width: 768px) {
+
+    nav {
+        padding: 20px 20px;
+        /* 좌우 패딩을 40px -> 20px로 축소 */
+    }
+
+    .logo {
+        font-size: 1.1rem;
+    }
+
     .section-profile {
         grid-template-columns: 1fr;
         padding: 80px 20px;
@@ -853,6 +865,22 @@ footer {
         flex-direction: column;
         align-items: stretch;
     }
+
+    .tech-marquee {
+        /* scale을 1.1에서 1.01 정도로 줄여서 삐져나감을 최소화하거나,
+           width를 줄이고 transform을 유지하는 방식을 사용해야 합니다. */
+        width: 100%;
+        transform: rotate(-2deg) scale(1.02);
+        /* 모바일에서는 과도한 확대 방지 */
+        margin: 50px 0;
+        /* 위아래 여백 안전하게 확보 */
+    }
+
+    /* Marquee 트랙이 화면 밖으로 밀리지 않도록 확실하게 잡기 */
+    .marquee-track {
+        width: 100%;
+    }
+
 }
 
 a:focus-visible,
