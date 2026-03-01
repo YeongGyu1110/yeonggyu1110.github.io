@@ -176,6 +176,10 @@ const translations = {
         ko: "클릭하면 전체 프로젝트 목록을 닫고 홈 화면으로 돌아갑니다.",
         en: "Click to close the project archive and return to the main home screen."
     },
+    snsSub: {
+        ko: "협업과 소통을 위한 연결 채널",
+        en: "Open for collaboration."
+    }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
