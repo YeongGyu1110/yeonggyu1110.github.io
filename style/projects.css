@@ -246,6 +246,81 @@
     box-shadow: 5px 5px 0 rgba(255, 107, 107, 0.4);
 }
 
+.project-card.offline-card {
+    background: #030303;
+    border-color: #1a1a1a;
+    opacity: 0.8;
+}
+
+.project-card.offline-card::before {
+    background: #222;
+}
+
+.project-card.offline-card:hover {
+    transform: translate(-2px, -2px);
+    border-color: #333;
+    box-shadow: 2px 2px 0 rgba(255, 255, 255, 0.05);
+    background: #080808;
+    opacity: 1;
+}
+
+.project-card.offline-card:hover::before {
+    background: #555;
+}
+
+.offline-card .project-status {
+    color: #ff4444;
+    font-weight: 700;
+    opacity: 0.7;
+    animation: slow-blink 2s step-end infinite;
+}
+
+@keyframes slow-blink {
+
+    0%,
+    100% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+}
+
+.offline-card .project-title {
+    color: #aaa;
+}
+
+.offline-card .project-card:hover .project-title::after {
+    color: #ff4444;
+}
+
+.offline-card .tech-tag {
+    border-color: #222;
+    color: #555;
+}
+
+.offline-card:hover .tech-tag {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: #444;
+    color: #888;
+}
+
+.offline-card .disabled-link {
+    color: #444;
+    border-color: #222;
+    background: transparent;
+    cursor: not-allowed !important;
+}
+
+.offline-card .disabled-link:hover {
+    color: #ff4444 !important;
+    border-color: #ff4444;
+    background: rgba(255, 68, 68, 0.05);
+    transform: none !important;
+    box-shadow: none;
+}
+
 .card-header {
     display: flex;
     justify-content: space-between;
@@ -340,7 +415,6 @@
     align-items: center;
     flex-wrap: wrap;
 }
-
 
 .action-link {
     font-family: 'JetBrains Mono', monospace;
@@ -757,16 +831,12 @@ button:focus-visible {
     border-radius: 0 !important;
 }
 
-/* --- 기본 마우스 커서 복구 (projects.html 전용) --- */
-
-/* 1. 모든 요소에 기본 화살표 커서 보이게 하기 */
 *,
 input,
 textarea {
     cursor: auto !important;
 }
 
-/* 2. 클릭 가능한 요소 + "그 안의 모든 자식 요소(*)"까지 전부 손가락 커서로 강제 변경! */
 a,
 a *,
 button,
@@ -782,7 +852,6 @@ button *,
     cursor: pointer !important;
 }
 
-/* 3. 기존 커스텀 커서(글로우 효과 & 하얀 점) 숨기기 */
 .cursor-glow,
 .cursor-dot {
     display: none !important;
