@@ -166,7 +166,7 @@ const translations = {
     },
     noItemsMatchYourSearch: {
         ko: "// 검색 결과와 일치하는 항목을 찾을 수 없습니다.<br>// 어림도 없지!",
-        en: "// No items match your search.<br>NOT A CHANCE."
+        en: "// No items match your search.<br>// NOT A CHANCE."
     },
     ProjectArchiveInnerSub: {
         ko: "클릭하면 전체 프로젝트 목록을 닫고 홈 화면으로 돌아갑니다.",
