@@ -867,18 +867,14 @@ footer {
     }
 
     .tech-marquee {
-        /* scale을 1.1에서 1.01 정도로 줄여서 삐져나감을 최소화하거나,
-           width를 줄이고 transform을 유지하는 방식을 사용해야 합니다. */
         width: 100%;
-        transform: rotate(-2deg) scale(1.02);
-        /* 모바일에서는 과도한 확대 방지 */
+        overflow: hidden;
         margin: 50px 0;
-        /* 위아래 여백 안전하게 확보 */
     }
 
-    /* Marquee 트랙이 화면 밖으로 밀리지 않도록 확실하게 잡기 */
     .marquee-track {
-        width: 100%;
+        width: fit-content;
+        animation-duration: 25s;
     }
 
 }
