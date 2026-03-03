@@ -180,12 +180,9 @@ const translations = {
 
 document.addEventListener('DOMContentLoaded', () => {
     const langBtn = document.getElementById('lang-btn');
-    let currentLang = 'ko';
-
-    const userLang = navigator.language || navigator.userLanguage;
-    if (!userLang.includes('ko')) {
-        currentLang = 'en';
-    }
+    let currentLang =
+        localStorage.getItem('userLang') ||
+        ((navigator.language || navigator.userLanguage).includes('ko') ? 'ko' : 'en');
 
     updateContent(currentLang);
 
@@ -210,6 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.body.style.wordBreak = lang === 'ko' ? 'keep-all' : 'normal';
         document.documentElement.lang = lang;
+        localStorage.setItem('userLang', lang);
     }
 });
 
