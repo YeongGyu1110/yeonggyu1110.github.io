@@ -36,6 +36,7 @@
     font-size: 2.5rem;
     white-space: nowrap;
     color: rgba(255, 255, 255, 0.15);
+    /* color: rgba(255, 255, 255, 1); */
     padding: 15px 40px;
     line-height: 1;
     flex-shrink: 0;
@@ -550,52 +551,6 @@
     }
 }
 
-@media (max-width: 768px) {
-    .project-header {
-        height: 45vh;
-    }
-
-    .marquee-content {
-        font-size: 1.8rem;
-        padding: 10px 20px;
-    }
-
-    .directory-index {
-        padding: 100px 5% 40px;
-    }
-
-    .index-title {
-        font-size: 2rem;
-    }
-
-    .folder-tab {
-        width: 100%;
-        margin-right: 0;
-        padding: 15px 20px;
-        background: rgba(255, 255, 255, 0.02);
-    }
-
-    .category-section {
-        padding: 60px 5% 0;
-    }
-
-    .cat-name {
-        font-size: 1.4rem;
-    }
-
-    .card-footer {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-    .special-link {
-        margin-left: 0;
-        width: 100%;
-        justify-content: center;
-    }
-}
-
 .system-exit-section {
     padding: 100px 10% 0;
 }
@@ -752,6 +707,7 @@
     .marquee-content {
         font-size: 1.8rem;
         padding: 10px 20px;
+        color: rgba(255, 255, 255, 0.3);
     }
 
     .project-hero-desc {
