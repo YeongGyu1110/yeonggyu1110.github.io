@@ -120,10 +120,10 @@ const translations = {
         ko: "메신저봇 프레임워크를 이용해 초기에 제작했던 채팅 응답 스크립트들을 모아둔 저장소입니다. 효율적이지 못한 초기 코드들이 다량 포함되어 있으며, 단순 기록 및 보관을 목적으로 하고 있습니다.",
         en: "A repository of chat response scripts initially created using the Messenger Bot framework. It contains many early, inefficient codes and is maintained purely for archival and record-keeping purposes."
     },
-    discordjsSendbox: {
-        ko: "Discord.js 라이브러리의 기능을 테스트하고 실험하는 전용 샌드박스 환경입니다. 비동기 자바스크립트 핸들링과 봇 상호작용의 핵심 원리를 학습합니다.",
-        en: "A dedicated sandbox environment for testing and experimenting with the Discord.js library. Focuses on learning asynchronous JavaScript handling and bot interaction principles."
-    },
+    discordBotExamples: {
+        ko: "Discord.js를 활용해 구현한 다양한 유틸리티 봇 예제 모음입니다. REST API 연동(고양이 이미지, 날씨, 번역)부터 데이터 가공(진법 변환, 모스부호, 아스키 아트), 그리고 한국어 자모 분리까지 디스코드 봇의 다채로운 활용 가능성을 탐구한 코드들을 담고 있습니다.",
+        en: "A collection of diverse utility bot examples implemented with Discord.js. It explores the versatile possibilities of Discord bots, covering REST API integration (cat images, weather, translation), data processing (base conversion, Morse code, ASCII art), and Korean syllable decomposition."
+    },    
     Yeonggyu1110GithubIo: {
         ko: "사이버펑크 터미널 UI 컨셉으로 제작된 개인 포트폴리오 웹사이트입니다. 바닐라 자바스크립트와 CSS 애니메이션을 활용하여 시스템 터미널과 유사한 몰입감 있는 인터페이스를 구현했습니다.",
         en: "A personal portfolio website designed with a cyberpunk terminal UI concept. Features an immersive interface resembling a system terminal, implemented using Vanilla JS and CSS animations."
@@ -163,6 +163,14 @@ const translations = {
     learnReact: {
         ko: "선언적 UI 프로그래밍과 컴포넌트 기반 아키텍처를 이해하기 위한 React 학습 과정입니다. 가상 DOM의 효율성과 상태 관리 라이브러리의 활용 방식을 탐구합니다.",
         en: "A React learning journey to understand declarative UI programming and component-based architecture. Explores Virtual DOM efficiency and state management."
+    },
+    javascriptSendbox: {
+        ko: "자바스크립트의 언어적 특성을 깊이 있게 탐구하는 실험실입니다. 참조 데이터 타입의 동작 원리, 깊은/얕은 복사, 그리고 ES6+ 최신 문법을 실제 코드로 구현하며 언어의 심층부를 분석합니다.",
+        en: "A laboratory for deeply exploring the linguistic characteristics of JavaScript. Analyzes the depths of the language by implementing reference data type behaviors, deep/shallow copies, and modern ES6+ syntax."
+    },
+    discordjsSendbox: {
+        ko: "Discord.js 라이브러리의 기능을 테스트하고 실험하는 전용 샌드박스 환경입니다. 비동기 자바스크립트 핸들링과 봇 상호작용의 핵심 원리를 학습합니다.",
+        en: "A dedicated sandbox environment for testing and experimenting with the Discord.js library. Focuses on learning asynchronous JavaScript handling and bot interaction principles."
     },
     noItemsMatchYourSearch: {
         ko: "// 검색 결과와 일치하는 항목을 찾을 수 없습니다.<br>// 어림도 없지!",
