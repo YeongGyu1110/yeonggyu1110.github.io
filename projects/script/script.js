@@ -20,9 +20,30 @@ document.addEventListener("DOMContentLoaded", () => {
             isHoveringExit = false;
         });
 
-        function animateExitGrid() {
-            const targetVelocity = isHoveringExit ? hoverVelocity : normalVelocity;
+        let isExitVisible = false;
 
+        const exitObserverOptions = {
+            rootMargin: "50px", 
+            threshold: 0
+        };
+
+        const exitObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                if (!isExitVisible) {
+                    isExitVisible = true;
+                    animateExitGrid();
+                }
+            } else {
+                isExitVisible = false;
+            }
+        }, exitObserverOptions);
+
+        exitObserver.observe(exitBanner);
+
+        function animateExitGrid() {
+            if (!isExitVisible) return;
+
+            const targetVelocity = isHoveringExit ? hoverVelocity : normalVelocity;
             currentVelocity += (targetVelocity - currentVelocity) * 0.05;
 
             gridPosX = (gridPosX + currentVelocity) % 40;
@@ -32,7 +53,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
             requestAnimationFrame(animateExitGrid);
         }
+        
+    }
+});
 
-        animateExitGrid();
+document.addEventListener("DOMContentLoaded", () => {
+    const headerMarqueeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const tracks = entry.target.querySelectorAll('.marquee-track');
+            if (entry.isIntersecting) {
+                tracks.forEach(track => track.style.animationPlayState = 'running');
+            } else {
+                tracks.forEach(track => track.style.animationPlayState = 'paused');
+            }
+        });
+    });
+
+    const marqueeWrapper = document.querySelector('.marquee-wrapper');
+    if (marqueeWrapper) {
+        headerMarqueeObserver.observe(marqueeWrapper);
     }
 });

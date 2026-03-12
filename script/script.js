@@ -233,9 +233,32 @@ document.addEventListener("DOMContentLoaded", () => {
             isHoveringArchive = false;
         });
 
-        function animateArchiveGrid() {
-            const targetVelocity = isHoveringArchive ? hoverVelocity : normalVelocity;
 
+        let isArchiveVisible = false;
+
+        const observerOptions = {
+            root: null,
+            rootMargin: "50px",
+            threshold: 0
+        };
+
+        const archiveObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                if (!isArchiveVisible) {
+                    isArchiveVisible = true;
+                    animateArchiveGrid(); 
+                }
+            } else {
+                isArchiveVisible = false; 
+            }
+        }, observerOptions);
+
+        archiveObserver.observe(archiveBanner);
+
+        function animateArchiveGrid() {
+            if (!isArchiveVisible) return; 
+
+            const targetVelocity = isHoveringArchive ? hoverVelocity : normalVelocity;
             currentVelocity += (targetVelocity - currentVelocity) * 0.05;
 
             gridPosX = (gridPosX - currentVelocity) % 40;
@@ -245,7 +268,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
             requestAnimationFrame(animateArchiveGrid);
         }
-
-        animateArchiveGrid();
+        
     }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const marqueeObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const tracks = entry.target.querySelectorAll('.marquee-track');
+            if (entry.isIntersecting) {
+                tracks.forEach(track => track.style.animationPlayState = 'running');
+            } else {
+                tracks.forEach(track => track.style.animationPlayState = 'paused');
+            }
+        });
+    }, { rootMargin: "50px" });
+
+    document.querySelectorAll('.tech-marquee').forEach(el => {
+        marqueeObserver.observe(el);
+    });
 });
