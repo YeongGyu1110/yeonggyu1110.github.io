@@ -74,3 +74,20 @@ document.addEventListener("DOMContentLoaded", () => {
         headerMarqueeObserver.observe(marqueeWrapper);
     }
 });
+
+const scrollLinks = document.querySelectorAll('.folder-tab');
+scrollLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+
+        if (targetElement) {
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
