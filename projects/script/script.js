@@ -78,18 +78,15 @@ document.addEventListener("DOMContentLoaded", () => {
 const scrollLinks = document.querySelectorAll('.folder-tab');
 scrollLinks.forEach(link => {
     link.addEventListener('click', function(e) {
-        // a가 url에 id를 갖다 붙이는거 막기
         e.preventDefault();
 
-        // href로 지정된 요소 찾기
         const targetId = this.getAttribute('href');
         const targetElement = document.querySelector(targetId);
 
-        // 요소가 있는 경우 이동하기
         if (targetElement) {
             targetElement.scrollIntoView({
-                behavior: 'smooth', //부드럽게
-                block: 'start' // 화면 상단에 요소 맞추기
+                behavior: 'smooth',
+                block: 'start'
             });
         }
     });
