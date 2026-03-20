@@ -35,7 +35,8 @@
     font-family: 'Silkscreen', cursive;
     font-size: 2.5rem;
     white-space: nowrap;
-    color: rgba(255, 255, 255, 0.15);
+    /* color: rgba(255, 255, 255, 0.15 ); */
+    color: rgba(255, 255, 255, 0.3 );
     /* color: rgba(255, 255, 255, 1); */
     padding: 15px 40px;
     line-height: 1;
@@ -581,8 +582,10 @@
     top: -100%;
     left: -100%;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        /* linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), */
+        linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+        /* linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px); */
+        linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
     background-size: 40px 40px;
     transform: rotate(-15deg);
     pointer-events: none;
@@ -592,8 +595,10 @@
 
 .exit-banner:hover .archive-bg-grid {
     background-image:
-        linear-gradient(rgba(255, 107, 107, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 107, 107, 0.1) 1px, transparent 1px);
+        /* linear-gradient(rgba(255, 107, 107, 0.1) 1px, transparent 1px), */
+        linear-gradient(rgba(255, 107, 107, 0.3) 1px, transparent 1px),
+        /* linear-gradient(90deg, rgba(255, 107, 107, 0.1) 1px, transparent 1px); */
+        linear-gradient(90deg, rgba(255, 107, 107, 0.3) 1px, transparent 1px);
 }
 
 .exit-banner .archive-content {
