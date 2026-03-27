@@ -31,7 +31,7 @@ a,
 button,
 input,
 textarea {
-    cursor: none !important;
+    /* cursor: none !important; */
 }
 
 * {
@@ -64,17 +64,17 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(255, 107, 107, 0.25) 0%, rgba(0, 0, 0, 0) 70%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(255, 107, 107, 0.15) 0%, rgba(0, 0, 0, 0) 60%);
     border-radius: 50%;
     pointer-events: none;
     transform: translate(-50%, -50%);
-    z-index: 0;
-    filter: blur(50px);
-    opacity: 0.8;
+    z-index: -1;
+    filter: blur(80px);
     will-change: transform;
 }
+
 
 .cursor-dot {
     position: fixed;
@@ -906,6 +906,7 @@ button:focus-visible {
 }
 
 .lang-toggle-btn:hover {
+    cursor: pointer;
     color: var(--accent-color);
     border-color: var(--accent-color);
     background: rgba(255, 107, 107, 0.1);
