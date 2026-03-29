@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPLINK_TEST_ENV</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="terminal-container">
+        <!-- <p class="sys-msg">> SYSTEM_UPLINK_STATUS : <span class="status-online">ONLINE</span></p> -->
+        <!-- <p class="sys-msg">> SECURE_CHANNEL_ESTABLISHED : TRUE</p> -->
+        <!-- <br> -->
+        <p class="sys-msg highlight">
+            > CURRENT_ACTIVE_NODES : [ <span id="active-nodes" class="blink">0</span> ]
+        </p>
+        <br>
+        <!-- <p class="sys-msg">> WAITING_FOR_DATA_STREAM<span class="cursor">_</span></p> -->
+    </div>
+
+    <!-- Firebase 로직이 들어갈 스크립트 -->
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>
