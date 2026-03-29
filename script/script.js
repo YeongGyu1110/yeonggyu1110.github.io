@@ -296,3 +296,18 @@ document.addEventListener("DOMContentLoaded", () => {
         marqueeObserver.observe(el);
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const topLinks = document.querySelectorAll('nav a[href="#"]');
+
+    topLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    });
+});
