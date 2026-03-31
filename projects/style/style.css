@@ -13,13 +13,32 @@ nav {
     background-color: #050505;
 }
 
-.logo {
+.leading {
     font-weight: 800;
     font-size: 1.2rem;
     letter-spacing: -0.5px;
 }
 
-.logo span {
+.leading span {
+    color: var(--accent-color);
+}
+
+button {
+    border: 0;
+    background-color: transparent;
+}
+
+.actions {
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: none;
+    color: white;
+    /* cursor: pointer; */
+}
+
+.actions:hover {
+    font-size: 0.9rem;
+    font-weight: 600;
     color: var(--accent-color);
 }
 
