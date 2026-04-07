@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // 4. 최근 3개월 타겟 배열 생성
             const today = new Date();
             const targetMonths = [];
-            for (let i = 2; i >= 0; i--) {
+            for (let i = 0; i <= 2; i++) {
                 const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
                 targetMonths.push({ year: d.getFullYear(), month: d.getMonth() });
             }
