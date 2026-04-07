@@ -940,8 +940,15 @@ button *,
 .cal-day:not(.empty):hover {
     transform: scale(1.2); z-index: 10;
     border-color: #fff; color: #fff;
-    box-shadow: 0 0 20px rgba(255, 107, 107, 1);
+    /* box-shadow: 0 0 20px rgba(255, 107, 107, 1); */
 }
+
+/* 2. 레벨별 호버 그림자 (intensity 차별화) */
+.cal-day[data-level="0"]:hover { box-shadow: 0 0 8px rgba(255, 255, 255, 0.1); }
+.cal-day[data-level="1"]:hover { box-shadow: 0 0 12px rgba(255, 107, 107, 0.4); }
+.cal-day[data-level="2"]:hover { box-shadow: 0 0 18px rgba(255, 107, 107, 0.6); }
+.cal-day[data-level="3"]:hover { box-shadow: 0 0 25px rgba(255, 107, 107, 0.8); background: rgba(255, 107, 107, 0.9); }
+.cal-day[data-level="4"]:hover { box-shadow: 0 0 35px rgba(255, 107, 107, 1); background: #fff; color: #ff6b6b; }
 
 .loading-matrix { color: var(--accent-color); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; text-align: center; padding: 20px; animation: blink 1s infinite; }
 
