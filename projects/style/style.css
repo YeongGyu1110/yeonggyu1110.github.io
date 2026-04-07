@@ -28,18 +28,22 @@ button {
     background-color: transparent;
 }
 
-.actions {
+.nav-system-action {
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.9rem;
-    font-weight: 600;
-    transition: none;
-    color: white;
-    /* cursor: pointer; */
+    font-weight: 700;
+    color: var(--text-sub);
+    background: transparent;
+    border: 1px dashed transparent;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.2s steps(3, end);
 }
 
-.actions:hover {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--accent-color);
+.nav-system-action:hover {
+    color: var(--text-main);
+    border-color: #333;
+    background: #111;
 }
 
 .project-header {
