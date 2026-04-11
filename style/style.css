@@ -50,14 +50,29 @@ body {
     font-family: 'Pretendard', sans-serif;
     overflow-x: hidden;
     line-height: 1.6;
-    user-select: none;
-    -webkit-user-select: none;
+    /* user-select: none; */
+    /* -webkit-user-select: none; */
 }
 
-
 ::selection {
-    background: var(--accent-color);
+    background-color: var(--accent-color);
     color: #000;
+}
+
+img,
+svg,
+.sns-icon-box,
+.card-icon {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.leading,
+.actions,
+.btn-text,
+.tech-marquee,
+.archive-banner {
+    user-select: none;
 }
 
 .cursor-glow {
@@ -219,6 +234,11 @@ a {
     background-color: var(--accent-color);
 }
 
+.keyword::selection {
+    background: rgba(0, 0, 0, 0);
+    color: var(--accent-color);
+}
+
 .scroll-down {
     position: absolute;
     bottom: 40px;
@@ -228,6 +248,7 @@ a {
     color: var(--text-sub);
     animation: bounce 2s infinite;
 }
+
 
 .tech-marquee {
     width: 100%;
