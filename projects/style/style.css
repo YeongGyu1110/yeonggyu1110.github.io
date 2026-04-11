@@ -1,3 +1,27 @@
+img,
+svg,
+.sns-icon-box,
+.card-icon,
+.marquee-wrapper {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.folder-tab,
+.action-link,
+.btn-text,
+.cat-num,
+.exit-banner,
+.sidebar-close,
+.week-header,
+.days-grid,
+.nav-system-action,
+.project-type,
+.project-status {
+    user-select: none;
+}
+
+
 nav {
     position: fixed;
     top: 0;
