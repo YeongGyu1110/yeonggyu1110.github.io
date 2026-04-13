@@ -1,5 +1,4 @@
 const glow = document.querySelector('.cursor-glow');
-const dot = document.querySelector('.cursor-dot');
 
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
@@ -10,7 +9,6 @@ const speed = 0.08;
 document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
 });
 
 function animate() {
@@ -23,12 +21,10 @@ animate();
 
 document.addEventListener('mouseleave', () => {
     glow.style.opacity = '0';
-    dot.style.opacity = '0';
 });
 
 document.addEventListener('mouseenter', () => {
     glow.style.opacity = '0.8';
-    dot.style.opacity = '1';
 });
 
 document.addEventListener('DOMContentLoaded', () => {
