@@ -619,41 +619,37 @@
         </div>
 
         <div class="sidebar-content">
-            <!-- 프로필 섹션 -->
             <div class="profile-info-block">
                 <div class="profile-avatar">
                     <img src="https://github.com/yeonggyu1110.png" alt="Profile">
                 </div>
                 <div class="profile-text">
-                    <h3 class="profile-name">YeongGyu1110</h3>
-                    <p class="profile-status">[ SYS_ADMIN ]</p>
+                    <h3 class="profile-name" translate="no">YeongGyu1110</h3>
+                    <p class="profile-status" data-translate="sidebarStatus">[ 메인 개발자 ]</p>
                 </div>
             </div>
 
-            <!-- 커스텀 깃허브 3개월 달력 섹션 -->
             <div class="sidebar-section">
                 <div class="section-title">
-                    <span>> ACTIVITY_MATRIX_SCANNER</span>
+                    <span data-translate="sidebarActivityTitle">> 깃허브 활동 로그</span>
                     <span class="blink">_</span>
                 </div>
-                <p class="section-desc">// RECENT_3_MONTHS_DATA_STREAM</p>
+                <p class="section-desc" data-translate="sidebarActivityDesc">// 최근 3개월의 기여 데이터</p>
 
-                <!-- JS가 달력 3개를 주입할 컨테이너 -->
                 <div id="cyber-calendar-container" class="calendar-wrapper">
-                    <!-- Loading Text -->
-                    <div class="loading-matrix">FETCHING_GITHUB_DATA...</div>
+                    <div class="loading-matrix" data-translate="sidebarLoading">데이터를 동기화 중입니다...</div>
                 </div>
             </div>
         </div>
 
-        <!-- 사이드바 푸터 (접속자 수) -->
         <div class="sidebar-footer">
             <div class="status-indicator">
                 <div class="status-dot"></div>
-                <span class="status-text">SYSTEM_ONLINE</span>
+                <span class="status-text" data-translate="sidebarSystemOnline">시스템 정상 작동 중</span>
             </div>
             <div class="active-users-block">
-                // ACTIVE_NODES: <span id="active-nodes" class="blink"
+                <span data-translate="sidebarActiveUsers">// 실시간 접속자 수:</span>
+                <span id="active-nodes" class="blink"
                     style="color: var(--accent-color); font-weight: bold; margin-left: 5px;">1</span>
             </div>
         </div>

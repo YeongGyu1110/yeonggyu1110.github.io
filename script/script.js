@@ -190,7 +190,14 @@ const translations = {
     snsSub: {
         ko: "협업과 소통을 위한 연결 채널",
         en: "Open for collaboration."
-    }
+    },
+    sidebarStatus: { ko: "[ 메인 개발자 ]", en: "[ LEAD DEVELOPER ]" },
+    sidebarActivityTitle: { ko: "> 깃허브 활동 로그", en: "> GITHUB_ACTIVITY_LOG" },
+    sidebarActivityDesc: { ko: "// 최근 3개월의 기여 데이터", en: "// LAST_3_MONTHS_CONTRIBUTION" },
+    sidebarLoading: { ko: "데이터를 동기화 중...", en: "SYNCING_GITHUB_DATA..." },
+    sidebarActiveUsers: { ko: "// 실시간 접속자 수:", en: "// ACTIVE_SESSIONS:" },
+    sidebarSystemOnline: { ko: "시스템: 온라인", en: "SYSTEM_ONLINE" }
+
 };
 
 document.addEventListener('DOMContentLoaded', () => {
