@@ -1,5 +1,4 @@
 const glow = document.querySelector('.cursor-glow');
-const dot = document.querySelector('.cursor-dot');
 
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
@@ -99,6 +98,14 @@ const translations = {
     gallerySub: {
         ko: "최신 기술 트렌드와 현장의 인사이트를 수집합니다.",
         en: "Gathering intelligence from the tech frontier."
+    },
+    galleryAlt1: {
+        ko: "2025년 12월 6일. DEVFEST INCHEON 2025 행사에서 '2026년: LLM 다음의 이야기' 세션을 기록한 사진",
+        en: "December 6, 2025. A photo recording the session '2026: Story after LLM' at DEVFEST INCHEON 2025."
+    },
+    galleryAlt2: {
+        ko: "2026년 1월 30일. AI SEOUL 2026 행사에 갔다온 걸 기록한 사진",
+        en: "January 30, 2026. A photo recording the visit to AI SEOUL 2026."
     },
     archiveSub: {
         ko: "구현된 모든 로직과 웹 인터페이스 아카이브를 탐색합니다.",
@@ -201,11 +208,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateContent(lang) {
         const elements = document.querySelectorAll('[data-translate]');
-
         elements.forEach(el => {
             const key = el.getAttribute('data-translate');
             if (translations[key] && translations[key][lang]) {
                 el.innerHTML = translations[key][lang];
+            }
+        });
+
+        const altElements = document.querySelectorAll('[data-translate-alt]');
+        altElements.forEach(el => {
+            const key = el.getAttribute('data-translate-alt');
+            if (translations[key] && translations[key][lang]) {
+                el.setAttribute('alt', translations[key][lang]);
+            }
+        });
+
+        const titleElements = document.querySelectorAll('[data-translate-title]');
+        titleElements.forEach(el => {
+            const key = el.getAttribute('data-translate-title');
+            if (translations[key] && translations[key][lang]) {
+                el.setAttribute('title', translations[key][lang]);
             }
         });
 
