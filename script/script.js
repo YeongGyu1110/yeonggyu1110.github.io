@@ -96,6 +96,14 @@ const translations = {
         ko: "최신 기술 트렌드와 현장의 인사이트를 수집합니다.",
         en: "Gathering intelligence from the tech frontier."
     },
+    galleryAlt1: {
+        ko: "2025년 12월 6일. DEVFEST INCHEON 2025 행사에서 '2026년: LLM 다음의 이야기' 세션을 기록한 사진",
+        en: "December 6, 2025. A photo recording the session '2026: Story after LLM' at DEVFEST INCHEON 2025."
+    },
+    galleryAlt2: {
+        ko: "2026년 1월 30일. AI SEOUL 2026 행사에 갔다온 걸 기록한 사진",
+        en: "January 30, 2026. A photo recording the visit to AI SEOUL 2026."
+    },
     archiveSub: {
         ko: "구현된 모든 로직과 웹 인터페이스 아카이브를 탐색합니다.",
         en: "Exploring archives of implemented logic and web interfaces."
@@ -179,7 +187,14 @@ const translations = {
     snsSub: {
         ko: "협업과 소통을 위한 연결 채널",
         en: "Open for collaboration."
-    }
+    },
+    sidebarStatus: { ko: "[ 메인 개발자 ]", en: "[ LEAD DEVELOPER ]" },
+    sidebarActivityTitle: { ko: "> 깃허브 활동 로그", en: "> GITHUB_ACTIVITY_LOG" },
+    sidebarActivityDesc: { ko: "// 최근 3개월의 기여 데이터", en: "// LAST_3_MONTHS_CONTRIBUTION" },
+    sidebarLoading: { ko: "데이터를 동기화 중...", en: "SYNCING_GITHUB_DATA..." },
+    sidebarActiveUsers: { ko: "// 실시간 접속자 수:", en: "// ACTIVE_SESSIONS:" },
+    sidebarSystemOnline: { ko: "시스템: 온라인", en: "SYSTEM_ONLINE" }
+
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -197,11 +212,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateContent(lang) {
         const elements = document.querySelectorAll('[data-translate]');
-
         elements.forEach(el => {
             const key = el.getAttribute('data-translate');
             if (translations[key] && translations[key][lang]) {
                 el.innerHTML = translations[key][lang];
+            }
+        });
+
+        const altElements = document.querySelectorAll('[data-translate-alt]');
+        altElements.forEach(el => {
+            const key = el.getAttribute('data-translate-alt');
+            if (translations[key] && translations[key][lang]) {
+                el.setAttribute('alt', translations[key][lang]);
+            }
+        });
+
+        const titleElements = document.querySelectorAll('[data-translate-title]');
+        titleElements.forEach(el => {
+            const key = el.getAttribute('data-translate-title');
+            if (translations[key] && translations[key][lang]) {
+                el.setAttribute('title', translations[key][lang]);
             }
         });
 
