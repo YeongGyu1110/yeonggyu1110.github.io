@@ -234,11 +234,6 @@ a {
     background-color: var(--accent-color);
 }
 
-.keyword::selection {
-    background: rgba(0, 0, 0, 0);
-    color: var(--accent-color);
-}
-
 .scroll-down {
     position: absolute;
     bottom: 40px;
