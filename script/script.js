@@ -324,7 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const topLinks = document.querySelectorAll('nav a[href="#"]');
+    const topLinks = document.querySelectorAll('a[href="#top"]');
 
     topLinks.forEach(link => {
         link.addEventListener('click', function(e) {
@@ -334,6 +334,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 top: 0,
                 behavior: 'smooth'
             });
+
+            document.body.setAttribute('tabindex', '-1');
+            document.body.focus({ preventScroll: true });
+            
+            document.body.addEventListener('blur', () => {
+                document.body.removeAttribute('tabindex');
+            }, { once: true });
         });
     });
 });

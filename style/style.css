@@ -973,3 +973,31 @@ button:focus-visible {
     background: rgba(255, 107, 107, 0.1);
     transform: translateY(-2px);
 }
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .marquee-track {
+        animation: none !important;
+        transform: none !important;
+        white-space: normal;
+        flex-wrap: wrap;
+    }
+
+    .reveal-text,
+    .reveal-card,
+    .reveal-img,
+    .reveal-item {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .cursor-glow {
+        display: none !important;
+    }
+}
