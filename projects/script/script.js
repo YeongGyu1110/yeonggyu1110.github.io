@@ -168,7 +168,8 @@ document.addEventListener("DOMContentLoaded", () => {
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
             
-            // 사이드바 열릴 때 달력 렌더링 (CORS 해결된 JSON API 사용)
+            setTimeout(() => sidebarCloseBtn.focus(), 100); 
+            
             if (!document.getElementById('calendar-rendered')) {
                 renderMatrixCalendar('yeonggyu1110');
             }
@@ -179,7 +180,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if(sidebar) sidebar.classList.remove('active');
         if(overlay) overlay.classList.remove('active');
         document.body.style.overflow = '';
+        
+        if (sidebarOpenBtn) sidebarOpenBtn.focus();
     };
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+            closeSidebar();
+        }
+    });
 
     if (sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', closeSidebar);
     if (overlay) overlay.addEventListener('click', closeSidebar);
@@ -262,6 +271,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 for (let i = 0; i < firstDayIndex; i++) {
                     const emptyDay = document.createElement('div');
                     emptyDay.className = 'cal-day empty';
+                    emptyDay.setAttribute('aria-hidden', 'true');
                     daysGrid.appendChild(emptyDay);
                 }
 
@@ -276,6 +286,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     const level = dataMap[dateString] || "0";
                     dayEl.setAttribute('data-level', level);
                     dayEl.title = `[ ${dateString} ] Contributions: Level ${level}`;
+
+                     // 추가: 스크린 리더가 명확하게 읽도록 ARIA 레이블 추가
+                    dayEl.setAttribute('aria-label', `${dateString}, 기여도 레벨 ${level}`);
+                    dayEl.setAttribute('tabindex', '0'); // 키보드 탭으로 접근 가능하게 만들기 (선택사항)
                     
                     daysGrid.appendChild(dayEl);
                 }
