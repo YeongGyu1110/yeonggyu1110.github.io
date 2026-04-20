@@ -203,7 +203,16 @@ const translations = {
     sidebarActivityDesc: { ko: "// 최근 3개월의 기여 데이터", en: "// LAST_3_MONTHS_CONTRIBUTION" },
     sidebarLoading: { ko: "데이터를 동기화 중...", en: "SYNCING_GITHUB_DATA..." },
     sidebarActiveUsers: { ko: "// 실시간 접속자 수:", en: "// ACTIVE_SESSIONS:" },
-    sidebarSystemOnline: { ko: "시스템: 온라인", en: "SYSTEM_ONLINE" }
+    sidebarSystemOnline: { ko: "시스템: 온라인", en: "SYSTEM_ONLINE" },
+    newWindow: {
+        ko: "(새 창에서 열림)",
+        en: "(Opens in a new window)"
+    },
+    skipLink: {
+        ko: "본문 바로가기",
+        en: "Skip to main content"
+    },
+
 
 };
 
@@ -303,7 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
         archiveObserver.observe(archiveBanner);
 
         function animateArchiveGrid() {
-            if (!isArchiveVisible) return; 
+            if (!isArchiveVisible || prefersReducedMotion) return; 
 
             const targetVelocity = isHoveringArchive ? hoverVelocity : normalVelocity;
             currentVelocity += (targetVelocity - currentVelocity) * 0.05;

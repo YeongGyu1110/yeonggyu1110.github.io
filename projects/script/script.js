@@ -1,3 +1,5 @@
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 document.addEventListener("DOMContentLoaded", () => {
     const exitBanner = document.querySelector('.exit-banner');
     const exitGrid = document.querySelector('.exit-banner .archive-bg-grid');
@@ -41,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         exitObserver.observe(exitBanner);
 
         function animateExitGrid() {
-            if (!isExitVisible) return;
+            if (!isExitVisible || prefersReducedMotion) return;
 
             const targetVelocity = isHoveringExit ? hoverVelocity : normalVelocity;
             currentVelocity += (targetVelocity - currentVelocity) * 0.05;
