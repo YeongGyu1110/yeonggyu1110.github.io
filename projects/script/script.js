@@ -103,6 +103,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 top: 0,
                 behavior: 'smooth'
             });
+
+            document.body.setAttribute('tabindex', '-1');
+            document.body.focus({ preventScroll: true });
+            document.body.addEventListener('blur', () => {
+                document.body.removeAttribute('tabindex');
+            }, { once: true });
         });
     });
 });
@@ -160,13 +166,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const sidebar = document.getElementById('profile-sidebar');
     const overlay = document.getElementById('sidebar-overlay');
 
-    // 사이드바 토글 로직
+    const focusableElementsString = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
+    let focusableElements;
+    let firstTabStop;
+    let lastTabStop;
+
     if (sidebarOpenBtn) {
         sidebarOpenBtn.addEventListener('click', (e) => {
             e.preventDefault();
             sidebar.classList.add('active');
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
+            
+            focusableElements = sidebar.querySelectorAll(focusableElementsString);
+            firstTabStop = focusableElements[0];
+            lastTabStop = focusableElements[focusableElements.length - 1];
             
             setTimeout(() => sidebarCloseBtn.focus(), 100); 
             
@@ -175,6 +189,25 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    sidebar.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+            if (e.shiftKey) { // Shift + Tab
+                if (document.activeElement === firstTabStop) {
+                    e.preventDefault();
+                    lastTabStop.focus();
+                }
+            } else { // Tab
+                focusableElements = sidebar.querySelectorAll(focusableElementsString);
+                lastTabStop = focusableElements[focusableElements.length - 1];
+
+                if (document.activeElement === lastTabStop) {
+                    e.preventDefault();
+                    firstTabStop.focus();
+                }
+            }
+        }
+    });
 
     const closeSidebar = () => {
         if(sidebar) sidebar.classList.remove('active');
