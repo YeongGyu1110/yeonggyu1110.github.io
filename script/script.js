@@ -11,13 +11,19 @@ document.addEventListener('mousemove', (e) => {
     mouseY = e.clientY;
 });
 
-function animate() {
-    curX += (mouseX - curX) * speed;
-    curY += (mouseY - curY) * speed;
-    glow.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
-    requestAnimationFrame(animate);
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (!prefersReducedMotion) {
+    function animate() {
+        curX += (mouseX - curX) * speed;
+        curY += (mouseY - curY) * speed;
+        glow.style.transform = `translate(${curX}px, ${curY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(animate);
+    }
+    animate();
+} else {
+    glow.style.display = 'none';
 }
-animate();
 
 document.addEventListener('mouseleave', () => {
     glow.style.opacity = '0';
@@ -55,6 +61,10 @@ const translations = {
     heroDesc: {
         ko: "단순한 응답을 넘어, 사용자와 상호작용하는 챗봇을 설계합니다.<br>현재는 웹 기술을 통해 더 넓은 플랫폼으로의 확장을 준비하고 있습니다.",
         en: "Beyond simple responses, I design chatbots that interact with users.<br>I am currently preparing to expand to wider platforms using web technologies."
+    },
+    profileAlt: {
+        ko: "개발자 YeongGyu1110의 프로필 사진",
+        en: "Profile image of developer YeongGyu1110"
     },
     profileDesc: {
         ko: "자동화와 챗봇 로직 설계에 강점이 있습니다. Discord.js와 메신저봇R을 통해 수많은 사용자와 소통하는 봇을 개발해왔으며, 이제는 그 경험을 웹 인터페이스로 시각화하는 과정에 있습니다.",
@@ -238,6 +248,9 @@ document.addEventListener('DOMContentLoaded', () => {
         langBtn.textContent = lang === 'ko'
             ? "[ SWITCH LANGUAGE : EN ]"
             : "[ SWITCH LANGUAGE : KR ]";
+
+        langBtn.setAttribute('aria-label', lang === 'ko' ? "영어로 언어 변경" : "Change language to Korean");
+
 
         document.body.style.wordBreak = lang === 'ko' ? 'keep-all' : 'normal';
         document.documentElement.lang = lang;

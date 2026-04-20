@@ -83,11 +83,16 @@ scrollLinks.forEach(link => {
         const targetId = this.getAttribute('href');
         const targetElement = document.querySelector(targetId);
 
+        const targetHeading = targetElement.querySelector('h3.cat-name');
+
         if (targetElement) {
             targetElement.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
+            if (targetHeading) {
+                targetHeading.focus({ preventScroll: true });
+            }
         }
     });
 });
@@ -323,6 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
                      // 추가: 스크린 리더가 명확하게 읽도록 ARIA 레이블 추가
                     dayEl.setAttribute('aria-label', `${dateString}, 기여도 레벨 ${level}`);
                     dayEl.setAttribute('tabindex', '0'); // 키보드 탭으로 접근 가능하게 만들기 (선택사항)
+                    dayEl.setAttribute('role', 'img');
                     
                     daysGrid.appendChild(dayEl);
                 }

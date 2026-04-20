@@ -69,9 +69,7 @@ svg,
 
 .leading,
 .actions,
-.btn-text,
-.tech-marquee,
-.archive-banner {
+.tech-marquee {
     user-select: none;
 }
 
@@ -1000,4 +998,29 @@ button:focus-visible {
     .cursor-glow {
         display: none !important;
     }
+}
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent-color);
+    color: #000;
+    padding: 8px;
+    z-index: 9999;
+    transition: top 0.2s;
+}
+.skip-link:focus {
+    top: 0;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
 }
