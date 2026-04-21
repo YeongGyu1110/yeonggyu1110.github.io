@@ -37,25 +37,27 @@
 
 <body id="top">
 
-    <a href="#main-content" class="skip-link" data-translate="skipLink"></a>
+    <a href="#main-content" class="skip-link" data-translate="skipLink">본문 바로가기</a>
 
     <div class="cursor-glow"></div>
     <!-- <div class="cursor-dot"></div> -->
 
     <nav>
-        <a href="#top" aria-label="페이지 최상단으로 이동">
-            <span class="leading" translate="no">DEV<span>_</span>DATA</span>
+        <a href="#top">
+            <span class="leading" translate="no">DEV<span aria-hidden="true">_</span>DATA</span>
+            <span class="sr-only" data-translate="navLeading">페이지 최상단으로 이동</span>
         </a>
         <!-- <button>
             <div class="actions" translate="no">YeongGyu1110</div>
         </button> -->
         <a href="https://github.com/yeonggyu1110" target="_blank" rel="noopener noreferrer" class="actions"
             translate="no">
-            GITHUB <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor"
+            <span aria-hidden="true">GITHUB</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor"
                 stroke-width="2" fill="none">
                 <path d="M7 17L17 7M17 7H7M17 7V17" />
             </svg>
-            <span class="sr-only" data-translate="newWindow">(새 창에서 열림)</span>
+            <span class="sr-only" data-translate="navActions">개발자 YeongGyu1110의 깃허브 프로필로 이동</span>
         </a>
     </nav>
 
@@ -69,7 +71,10 @@
             단순한 응답을 넘어, 사용자와 상호작용하는 챗봇을 설계합니다.<br>
             현재는 웹 기술을 통해 더 넓은 플랫폼으로의 확장을 준비하고 있습니다.
         </p>
-        <a href="#profile-heading" class="scroll-down" aria-label="본문 내용으로 스크롤하기">SCROLL TO INTERACT</a>
+        <a href="#profile-heading" class="scroll-down">
+            <span aria-hidden="true">SCROLL TO INTERACT</span>
+            <span class="sr-only" data-translate="scrollToContent">본문 내용으로 스크롤하기</span>
+        </a>
     </header>
 
     <main id="main-content" tabindex="-1">
@@ -95,7 +100,7 @@
             <div class="profile-frame reveal-img">
                 <img src="assets/profile.jpg" alt="개발자 YeongGyu1110 프로필 사진" data-translate-alt="profileAlt"
                     class="profile-img">
-                <div class="data-overlay" translate="no">
+                <div class="data-overlay" translate="no" aria-hidden="true">
                     STATUS: CODING<br>
                     MAIN: JS_CHATBOT<br>
                 </div>
@@ -244,8 +249,8 @@
                     <div class="archive-content">
                         <div class="archive-text-box">
                             <span class="archive-prompt" translate="no">
-                                <span class="prompt-path">C:\Users\YeongGyu\Projects</span><span
-                                    class="prompt-arrow">></span>
+                                <span class="prompt-path">C:\Users\YeongGyu\Projects</span><span class="prompt-arrow"
+                                    aria-hidden="true">></span>
                             </span>
                             <span class="archive-inner-title" translate="no">load_archive.bat /all<span
                                     class="cursor-blink" aria-hidden="true">_</span></span>
@@ -348,6 +353,7 @@
         </div>
     </footer>
 
+    <script src="script/i18n.js"></script>
     <script src="script/script.js"></script>
 </body>
 
