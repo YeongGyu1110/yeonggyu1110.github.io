@@ -214,6 +214,10 @@ const translations = {
     sidebarOpen: {
         ko: "사이드바 열기",
         en: "Open sidebar"
+    },
+    langBtnLabel: {
+        ko: "영어로 변경",
+        en: "Switch to Korean"
     }
 };
 
@@ -242,7 +246,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (langBtn) {
-            langBtn.textContent = lang === 'ko' ? '[ SWITCH LANGUAGE : EN ]' : '[ SWITCH LANGUAGE : KR ]';
+            const visualText = langBtn.querySelector('[aria-hidden="true"]');
+            if (visualText) {
+                visualText.textContent = lang === 'ko' ? '[ SWITCH LANGUAGE : EN ]' : '[ SWITCH LANGUAGE : KR ]';
+            }
         }
         document.documentElement.lang = lang;
         localStorage.setItem('preferredLang', lang);
