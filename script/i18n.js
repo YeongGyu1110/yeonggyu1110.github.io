@@ -216,8 +216,8 @@ const translations = {
         en: "Open sidebar"
     },
     langBtnLabel: {
-        ko: "영어로 변경",
-        en: "Switch to Korean"
+        ko: "현재 언어: 한국어 (영어로 변경하려면 클릭)",
+        en: "Current Language: English (Click to switch to Korean)"
     }
 };
 
