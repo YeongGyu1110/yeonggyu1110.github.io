@@ -69,9 +69,7 @@ svg,
 
 .leading,
 .actions,
-.btn-text,
-.tech-marquee,
-.archive-banner {
+.tech-marquee {
     user-select: none;
 }
 
@@ -967,4 +965,57 @@ button:focus-visible {
     border-color: var(--accent-color);
     background: rgba(255, 107, 107, 0.1);
     transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .marquee-track {
+        animation: none !important;
+        transform: none !important;
+        white-space: normal;
+        flex-wrap: wrap;
+    }
+
+    .reveal-text,
+    .reveal-card,
+    .reveal-img,
+    .reveal-item {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .cursor-glow {
+        display: none !important;
+    }
+}
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent-color);
+    color: #000;
+    padding: 8px;
+    z-index: 9999;
+    transition: top 0.2s;
+}
+.skip-link:focus {
+    top: 0;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
 }

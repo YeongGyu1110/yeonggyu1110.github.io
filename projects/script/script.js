@@ -1,3 +1,5 @@
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 document.addEventListener("DOMContentLoaded", () => {
     const exitBanner = document.querySelector('.exit-banner');
     const exitGrid = document.querySelector('.exit-banner .archive-bg-grid');
@@ -41,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         exitObserver.observe(exitBanner);
 
         function animateExitGrid() {
-            if (!isExitVisible) return;
+            if (!isExitVisible || prefersReducedMotion) return;
 
             const targetVelocity = isHoveringExit ? hoverVelocity : normalVelocity;
             currentVelocity += (targetVelocity - currentVelocity) * 0.05;
@@ -83,11 +85,16 @@ scrollLinks.forEach(link => {
         const targetId = this.getAttribute('href');
         const targetElement = document.querySelector(targetId);
 
+        const targetHeading = targetElement.querySelector('h3.cat-name');
+
         if (targetElement) {
             targetElement.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
+            if (targetHeading) {
+                targetHeading.focus({ preventScroll: true });
+            }
         }
     });
 });
@@ -103,6 +110,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 top: 0,
                 behavior: 'smooth'
             });
+
+            document.body.setAttribute('tabindex', '-1');
+            document.body.focus({ preventScroll: true });
+            document.body.addEventListener('blur', () => {
+                document.body.removeAttribute('tabindex');
+            }, { once: true });
         });
     });
 });
@@ -160,7 +173,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const sidebar = document.getElementById('profile-sidebar');
     const overlay = document.getElementById('sidebar-overlay');
 
-    // 사이드바 토글 로직
+    const focusableElementsString = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]';
+    let focusableElements;
+    let firstTabStop;
+    let lastTabStop;
+
     if (sidebarOpenBtn) {
         sidebarOpenBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -168,18 +185,50 @@ document.addEventListener("DOMContentLoaded", () => {
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
             
-            // 사이드바 열릴 때 달력 렌더링 (CORS 해결된 JSON API 사용)
+            focusableElements = sidebar.querySelectorAll(focusableElementsString);
+            firstTabStop = focusableElements[0];
+            lastTabStop = focusableElements[focusableElements.length - 1];
+            
+            setTimeout(() => sidebarCloseBtn.focus(), 100); 
+            
             if (!document.getElementById('calendar-rendered')) {
                 renderMatrixCalendar('yeonggyu1110');
             }
         });
     }
 
+    sidebar.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+            if (e.shiftKey) { // Shift + Tab
+                if (document.activeElement === firstTabStop) {
+                    e.preventDefault();
+                    lastTabStop.focus();
+                }
+            } else { // Tab
+                focusableElements = sidebar.querySelectorAll(focusableElementsString);
+                lastTabStop = focusableElements[focusableElements.length - 1];
+
+                if (document.activeElement === lastTabStop) {
+                    e.preventDefault();
+                    firstTabStop.focus();
+                }
+            }
+        }
+    });
+
     const closeSidebar = () => {
         if(sidebar) sidebar.classList.remove('active');
         if(overlay) overlay.classList.remove('active');
         document.body.style.overflow = '';
+        
+        if (sidebarOpenBtn) sidebarOpenBtn.focus();
     };
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+            closeSidebar();
+        }
+    });
 
     if (sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', closeSidebar);
     if (overlay) overlay.addEventListener('click', closeSidebar);
@@ -262,6 +311,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 for (let i = 0; i < firstDayIndex; i++) {
                     const emptyDay = document.createElement('div');
                     emptyDay.className = 'cal-day empty';
+                    emptyDay.setAttribute('aria-hidden', 'true');
                     daysGrid.appendChild(emptyDay);
                 }
 
@@ -276,6 +326,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     const level = dataMap[dateString] || "0";
                     dayEl.setAttribute('data-level', level);
                     dayEl.title = `[ ${dateString} ] Contributions: Level ${level}`;
+
+                     // 추가: 스크린 리더가 명확하게 읽도록 ARIA 레이블 추가
+                    dayEl.setAttribute('aria-label', `${dateString}, 기여도 레벨 ${level}`);
+                    dayEl.setAttribute('tabindex', '0'); // 키보드 탭으로 접근 가능하게 만들기 (선택사항)
+                    dayEl.setAttribute('role', 'img');
                     
                     daysGrid.appendChild(dayEl);
                 }

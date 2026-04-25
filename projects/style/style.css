@@ -985,3 +985,24 @@ button *,
 .status-dot { width: 8px; height: 8px; background-color: #00ff00; border-radius: 50%; box-shadow: 0 0 8px #00ff00; animation: blink 2s infinite; }
 .status-text { color: var(--text-sub); }
 .active-users-block { color: #888; }
+
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .marquee-track {
+        animation: none !important;
+        transform: none !important;
+    }
+    .marquee-wrapper {
+        opacity: 0.1 !important; /* 깜빡임과 이동을 멈추고 흐리게 고정 */
+    }
+    .cursor-blink, .blink, .slow-blink {
+        animation: none !important;
+        opacity: 1 !important;
+    }
+}
