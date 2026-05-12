@@ -137,9 +137,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 // GitHub와 유사한 알고리즘으로 레벨 스케일링
                 if (count > 0 && count <= 2) level = 1;
-                else if (count > 2 && count <= 5) level = 2;
-                else if (count > 5 && count <= 10) level = 3;
-                else if (count > 10) level = 4;
+                else if (count > 2 && count <= 4) level = 2;
+                else if (count > 4 && count <= 7) level = 3;
+                else if (count > 7) level = 4;
                 
                 dataMap[day.date] = level.toString(); // "YYYY-MM-DD": "Level"
             });
