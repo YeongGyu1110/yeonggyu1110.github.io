@@ -33,7 +33,6 @@ nav {
     z-index: 100;
     backdrop-filter: none;
     border-bottom: 1px dashed #333;
-    /* background-color: rgba(5, 5, 5, 0.95); */
     background-color: #050505;
 }
 
@@ -107,9 +106,7 @@ button {
     font-family: 'Silkscreen', cursive;
     font-size: 2.5rem;
     white-space: nowrap;
-    /* color: rgba(255, 255, 255, 0.15 ); */
     color: rgba(255, 255, 255, 0.3 );
-    /* color: rgba(255, 255, 255, 1); */
     padding: 15px 40px;
     line-height: 1;
     flex-shrink: 0;
@@ -938,7 +935,6 @@ button *,
 .calendar-wrapper { display: flex; flex-direction: column; gap: 20px; }
 .month-block { border: 1px solid #222; background: #080808; padding: 15px; }
 .month-title { font-family: 'JetBrains Mono', monospace; color: var(--accent-color); font-size: 0.9rem; margin-bottom: 15px;
-    /* text-align: center;  */
     letter-spacing: 1px; }
 
 /* 일~토 요일 헤더 */
@@ -968,7 +964,6 @@ button *,
 .cal-day:not(.empty):hover {
     transform: scale(1.2); z-index: 10;
     border-color: #fff; color: #fff;
-    /* box-shadow: 0 0 20px rgba(255, 107, 107, 1); */
 }
 
 /* 2. 레벨별 호버 그림자 (intensity 차별화) */
