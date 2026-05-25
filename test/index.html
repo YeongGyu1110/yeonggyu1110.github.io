@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Gravity Well Registry</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* 3D 캔버스 배경 */
+        #gravity-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* 콘텐츠 레이어 */
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            height: 100vh;
+            margin: 0 auto;
+            padding: 60px 40px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr; /* 좌측에 콘텐츠, 우측에 넓은 3D 공간 확보 */
+            align-items: center;
+        }
+
+        /* 왼쪽 정보 패널 */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            max-height: 700px;
+        }
+
+        header {
+            margin-bottom: 40px;
+            border-left: 3px solid #ff6b6b;
+            padding-left: 20px;
+        }
+
+        header h1 {
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            color: #ff6b6b;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            font-size: 0.75rem;
+            color: #555;
+            letter-spacing: 1px;
+        }
+
+        /* 링크 목록 */
+        .link-stream {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.25);
+            transition: color 0.3s, transform 0.3s;
+            padding: 6px 0;
+            cursor: pointer;
+            width: fit-content;
+        }
+
+        .link-index {
+            font-size: 0.8rem;
+            font-family: monospace;
+            color: rgba(255, 107, 107, 0.3);
+            margin-right: 20px;
+        }
+
+        .link-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+        }
+
+        .link-arrow {
+            font-size: 1rem;
+            color: #ff6b6b;
+            margin-left: 12px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        /* 호버 시 인터랙션 */
+        .link-item:hover {
+            color: #ff6b6b;
+            transform: translateX(10px);
+        }
+
+        .link-item:hover .link-index {
+            color: #ff6b6b;
+        }
+
+        .link-item:hover .link-text {
+            text-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+        }
+
+        .link-item:hover .link-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* 반응형 모바일 지원 */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 40px 20px;
+            }
+            .link-text {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="gravity-canvas"></canvas>
+
+    <div class="container">
+        <div class="left-panel">
+            <header>
+                <h1>3D GRAVITY REGISTRY</h1>
+                <p>SINGULARITY FIELD PROTOCOL // NO CATEGORIES</p>
+            </header>
+
+            <nav class="link-stream">
+                <a href="https://github.com" class="link-item" target="_blank">
+                    <span class="link-index">01</span><span class="link-text">GitHub</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://x.com" class="link-item" target="_blank">
+                    <span class="link-index">02</span><span class="link-text">X / Twitter</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://linkedin.com" class="link-item" target="_blank">
+                    <span class="link-index">03</span><span class="link-text">LinkedIn</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://discord.com" class="link-item" target="_blank">
+                    <span class="link-index">04</span><span class="link-text">Discord</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://store.steampowered.com" class="link-item" target="_blank">
+                    <span class="link-index">05</span><span class="link-text">Steam</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://tetr.io" class="link-item" target="_blank">
+                    <span class="link-index">06</span><span class="link-text">Tetr.io</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://open.kakao.com" class="link-item" target="_blank">
+                    <span class="link-index">07</span><span class="link-text">KakaoTalk</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://tistory.com" class="link-item" target="_blank">
+                    <span class="link-index">08</span><span class="link-text">Tistory</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://namu.wiki" class="link-item" target="_blank">
+                    <span class="link-index">09</span><span class="link-text">Namuwiki</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://youtube.com" class="link-item" target="_blank">
+                    <span class="link-index">10</span><span class="link-text">YouTube</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://instagram.com" class="link-item" target="_blank">
+                    <span class="link-index">11</span><span class="link-text">Instagram</span><span class="link-arrow">→</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gravity-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        // 3D 뷰포트 설정
+        const camera = {
+            angleX: 1.0, // 피치 (위아래 기울기 - 그리드를 비스듬히 눕히는 각도)
+            angleZ: 0.5, // 요 (좌우 회전)
+            fov: 500,    // 원근감 세기
+            dist: 750,   // 카메라 거리
+            offsetX: width > 900 ? width * 0.15 : 0, // 화면 우측 공간으로 중심 이동
+            offsetY: 0
+        };
+
+        // 중력 코어 위치 (3D 로컬 좌표계 기준)
+        const gravitySource = { x: 0, y: 0, z: 0, targetX: 0, targetY: 0, active: false };
+
+        // 3D 공간 상의 그리드 구조 정의
+        const gridSpacing = 35; 
+        const gridSizeX = 650; // 가로 크기
+        const gridSizeY = 650; // 세로 크기
+        let points = [];
+
+        // 격자점들을 3D 좌표로 초기 생성
+        function initPoints() {
+            points = [];
+            for (let y = -gridSizeY / 2; y <= gridSizeY / 2; y += gridSpacing) {
+                let row = [];
+                for (let x = -gridSizeX / 2; x <= gridSizeX / 2; x += gridSpacing) {
+                    row.push({
+                        x: x,
+                        y: y,
+                        z: 0,       // 평소 고도
+                        currZ: 0,   // 보간 적용 고도
+                        origX: x,
+                        origY: y
+                    });
+                }
+                points.push(row);
+            }
+        }
+
+        // 3D 좌표를 원근법을 적용한 2D 화면 좌표로 투영
+        function project(x, y, z) {
+            // Z축(YAW) 회전
+            let x1 = x * Math.cos(camera.angleZ) - y * Math.sin(camera.angleZ);
+            let y1 = x * Math.sin(camera.angleZ) + y * Math.cos(camera.angleZ);
+
+            // X축(PITCH) 회전
+            let y2 = y1 * Math.cos(camera.angleX) - z * Math.sin(camera.angleX);
+            let z2 = y1 * Math.sin(camera.angleX) + z * Math.cos(camera.angleX);
+
+            // 원근감(Perspective) 스케일 계산
+            const scale = camera.fov / (z2 + camera.dist);
+            const screenX = (width / 2) + camera.offsetX + x1 * scale;
+            const screenY = (height / 2) + camera.offsetY + y2 * scale;
+
+            return { x: screenX, y: screenY, zDepth: z2 };
+        }
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            camera.offsetX = width > 900 ? width * 0.15 : 0;
+            initPoints();
+        });
+
+        // 화면 중앙에 위치시키기 위해 마우스 좌표를 3D 공간계로 간단 변환
+        window.addEventListener('mousemove', (e) => {
+            if (!gravitySource.active) {
+                // 평소에는 마우스 커서가 3D 평면 위를 지배하도록 정렬
+                const refScale = Math.cos(camera.angleX);
+                gravitySource.targetX = (e.clientX - (width / 2) - camera.offsetX) * 1.3;
+                gravitySource.targetY = (e.clientY - (height / 2) - camera.offsetY) * 1.3 / refScale;
+            }
+        });
+
+        // 링크 호버 시, 해당 링크에 대응하는 특정 고정 위치로 블랙홀 코어 이동
+        const linkItems = document.querySelectorAll('.link-item');
+        linkItems.forEach((item, index) => {
+            item.addEventListener('mouseenter', () => {
+                gravitySource.active = true;
+                // 링크가 호버될 때마다 각각 고유한 기하학적 3D 내부 좌표로 중력 구덩이가 부드럽게 순간 이동함
+                gravitySource.targetX = -150 + (index * 25);
+                gravitySource.targetY = -200 + (index * 40);
+            });
+            item.addEventListener('mouseleave', () => {
+                gravitySource.active = false;
+            });
+        });
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            // 중력 소스 좌표 보간 (부드러운 이동)
+            gravitySource.x += (gravitySource.targetX - gravitySource.x) * 0.12;
+            gravitySource.y += (gravitySource.targetY - gravitySource.y) * 0.12;
+
+            const maxWellDepth = 450; // 블랙홀 함몰 깊이 (클수록 더 깊은 구덩이 형성)
+            const gravityRadius = 250; // 중력 영향 반경
+
+            // 1. 모든 교점의 함몰 깊이(Z) 3D 연산
+            for (let r = 0; r < points.length; r++) {
+                for (let c = 0; c < points[r].length; c++) {
+                    const p = points[r][c];
+
+                    const dx = gravitySource.x - p.origX;
+                    const dy = gravitySource.y - p.origY;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    let targetZ = 0;
+
+                    if (dist < gravityRadius) {
+                        // 실제 물리학의 시공간 왜곡 공식과 유사하게 역수(1/x) 및 곡선 함수 활용
+                        // 중앙으로 갈수록 가파르고 깊어지는 극한의 깔때기(Cone/Funnel) 구조 구현
+                        const ratio = dist / gravityRadius;
+                        const curve = Math.pow(1 - ratio, 2.5); // 거듭제곱을 키울수록 중심부가 수직으로 급락함
+                        targetZ = -maxWellDepth * curve;
+                    }
+
+                    // 스프링 가속을 더해 수직 요동이 생기도록 연산
+                    p.currZ += (targetZ - p.currZ) * 0.15;
+                }
+            }
+
+            // 투영 좌표를 저장할 2D 배열 임시 생성
+            const projected = [];
+            for (let r = 0; r < points.length; r++) {
+                projected[r] = [];
+                for (let c = 0; c < points[r].length; c++) {
+                    const p = points[r][c];
+                    projected[r][c] = project(p.x, p.y, p.currZ);
+                }
+            }
+
+            // 2. 가로 격자선 그리기
+            for (let r = 0; r < points.length; r++) {
+                for (let c = 0; c < points[r].length - 1; c++) {
+                    const p1 = projected[r][c];
+                    const p2 = projected[r][c+1];
+
+                    // 선이 아래로 깊숙하게 빨려 들어갈수록 더 강하게 빛나는 연출 (#ff6b6b의 채도 유지)
+                    const avgZ = (points[r][c].currZ + points[r][c+1].currZ) / 2;
+                    const intensity = Math.min(1, Math.abs(avgZ) / 250);
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    
+                    // 깊이 내려갈수록 희미한 붉은색에서 쨍한 네온 레드로 밝아짐
+                    ctx.strokeStyle = `rgba(255, 107, 107, ${0.06 + intensity * 0.45})`;
+                    ctx.lineWidth = 1 + intensity * 0.5;
+                    ctx.stroke();
+                }
+            }
+
+            // 3. 세로 격자선 그리기
+            for (let c = 0; c < points[0].length; c++) {
+                for (let r = 0; r < points.length - 1; r++) {
+                    const p1 = projected[r][c];
+                    const p2 = projected[r+1][c];
+
+                    const avgZ = (points[r][c].currZ + points[r+1][c].currZ) / 2;
+                    const intensity = Math.min(1, Math.abs(avgZ) / 250);
+
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    
+                    ctx.strokeStyle = `rgba(255, 107, 107, ${0.06 + intensity * 0.45})`;
+                    ctx.lineWidth = 1 + intensity * 0.5;
+                    ctx.stroke();
+                }
+            }
+
+            // 4. 싱귤래리티 (사건의 지평선 심연 점장식)
+            // 우측 아래 심연 한 가운데 가장 왜곡된 극점 근처에 아주 작게 소용돌이치는 코어 연출
+            const coreProj = project(gravitySource.x, gravitySource.y, -maxWellDepth * 0.9);
+            ctx.beginPath();
+            ctx.arc(coreProj.x, coreProj.y, 1.5, 0, Math.PI * 2);
+            ctx.fillStyle = '#ff6b6b';
+            ctx.shadowColor = '#ff6b6b';
+            ctx.shadowBlur = 12;
+            ctx.fill();
+            ctx.shadowBlur = 0; // 다른 패스에 영향 없도록 초기화
+
+            requestAnimationFrame(animate);
+        }
+
+        // 실행
+        initPoints();
+        animate();
+    </script>
+</body>
+</html>
