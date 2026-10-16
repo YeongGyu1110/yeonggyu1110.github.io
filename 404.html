@@ -55,13 +55,13 @@
   <div class="fixed inset-0 bg-grid pointer-events-none"></div>
   <div class="fixed inset-0 radial-glow pointer-events-none"></div>
 
-  <!-- 상단 여백 밸런스용 빈 공간 -->
+  <!-- 상단 여백 밸런스 -->
   <div class="w-full h-8"></div>
 
   <!-- 메인 404 영역 -->
-  <main class="w-full max-w-md mx-auto text-center relative z-10 my-auto py-8">
+  <main class="w-full max-w-lg mx-auto text-center relative z-10 my-auto py-8">
     
-    <!-- shadcn Badge 컴포넌트 스타일 -->
+    <!-- shadcn Badge 컴포넌트 -->
     <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-zinc-900 border border-border text-zinc-300 mb-6 shadow-sm">
       <i data-lucide="compass" class="w-3.5 h-3.5 text-zinc-400"></i>
       <span>404</span>
@@ -70,15 +70,15 @@
     </div>
 
     <!-- 타이틀 -->
-    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-100 mb-3">
+    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-100 mb-4 break-keep">
       어라, 잘못 찾아오신 것 같아요
     </h1>
     
-    <!-- 부드러운 설명글 (-요 체) -->
-    <p class="text-sm sm:text-base text-zinc-400 leading-relaxed mb-8 max-w-sm mx-auto">
-      주소가 잘못 입력되었거나 페이지가 이동되었을 수 있어요.<br class="hidden sm:inline" />
-      아래 버튼을 눌러 메인 화면으로 편하게 이동해 보세요.
-    </p>
+    <!-- 설명글: 문장 분리 & 단어 단위 줄바꿈(break-keep) 적용 -->
+    <div class="text-sm sm:text-base text-zinc-400 leading-relaxed mb-8 space-y-1 break-keep max-w-md mx-auto">
+      <p>주소가 잘못 입력되었거나 페이지가 이동되었을 수 있어요.</p>
+      <p>아래 버튼을 눌러 메인 화면으로 편하게 이동해 보세요.</p>
+    </div>
 
     <!-- 액션 버튼 -->
     <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -101,8 +101,8 @@
       </button>
     </div>
 
-    <!-- 현재 요청 경로 카드 (미니멀 코드 블록 스타일) -->
-    <div class="mt-10 p-3 rounded-lg border border-border/60 bg-zinc-900/40 backdrop-blur text-left flex items-center gap-2.5">
+    <!-- 현재 요청 경로 카드 -->
+    <div class="mt-10 p-3 rounded-lg border border-border/60 bg-zinc-900/40 backdrop-blur text-left flex items-center gap-2.5 max-w-md mx-auto">
       <i data-lucide="terminal" class="w-3.5 h-3.5 text-zinc-500 shrink-0"></i>
       <span class="text-xs text-zinc-500 font-mono">경로:</span>
       <span class="text-xs text-zinc-300 font-mono truncate" id="current-url"></span>
@@ -110,7 +110,7 @@
 
   </main>
 
-  <!-- 푸터: 저작권 텍스트를 제거하고 깔끔한 미니멀 링크만 중앙 배치 -->
+  <!-- 푸터: 심플 바로가기 링크 -->
   <footer class="w-full py-4 relative z-10 flex items-center justify-center gap-6 text-xs text-zinc-500">
     <a href="https://yeonggyu1110.github.io" class="hover:text-zinc-300 transition-colors">홈</a>
     <span class="text-zinc-700">•</span>
