@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flashbang Animation</title>
+  <title>PUBG Style Flashbang Animation</title>
   <style>
-    /* 화면 정중앙 정렬 및 여백 제어 */
     body {
       margin: 0;
       height: 100vh;
@@ -13,43 +12,45 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      background-color: #121212; /* 연출을 돋보이게 하기 위한 어두운 배경 */
+      background-color: #121415; /* 인게임 느낌의 어두운 배경 */
     }
 
-    /* 버튼에는 아무런 커스텀 스타일을 적용하지 않음 (기본 브라우저 스타일 유지) */
+    /* 버튼 기본 스타일 유지 (순정 태그) */
 
-    /* 섬광탄 컨테이너 */
+    /* 섬광탄 요소 */
     #flashbang {
       position: fixed;
       left: 50%;
-      bottom: -180px; /* 화면 아래 바깥에 대기 */
+      bottom: -320px; /* 화면 아래 숨김 */
       transform: translateX(-50%);
-      pointer-events: none; /* 클릭 방해 금지 */
+      pointer-events: none;
       display: none;
       z-index: 999;
+      filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.6));
     }
 
-    /* 아래에서 위로 회전하며 던져지는 애니메이션 */
-    .throw-up {
+    /* 무작위 덤블링 투척 애니메이션 */
+    .tossing {
       display: block !important;
-      animation: toss 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: tossArc 0.9s cubic-bezier(0.18, 0.89, 0.32, 1) forwards;
     }
 
-    @keyframes toss {
+    @keyframes tossArc {
       0% {
-        bottom: -180px;
-        transform: translateX(-50%) rotate(0deg) scale(0.8);
+        bottom: -320px;
+        transform: translateX(calc(-50% + var(--start-x))) rotate(0deg) scale(0.75);
       }
       50% {
-        transform: translateX(-50%) rotate(420deg) scale(1.1);
+        transform: translateX(calc(-50% + (var(--end-x) * 0.6))) rotate(calc(var(--rand-rot) * 0.6)) scale(1.05);
       }
       100% {
-        bottom: 55%; /* 화면 위쪽(중앙 살짝 위) 정점 도달 */
-        transform: translateX(-50%) rotate(720deg) scale(1);
+        bottom: var(--peak-y);
+        /* 똑바로 서지 않고 삐딱하고 불규칙한 각도에서 정점 도달 */
+        transform: translateX(calc(-50% + var(--end-x))) rotate(var(--rand-rot)) scale(1);
       }
     }
 
-    /* 섬광탄 터지는 화이트아웃 오버레이 */
+    /* 화면 화이트아웃 플래시 */
     #flash-overlay {
       position: fixed;
       inset: 0;
@@ -59,72 +60,131 @@
       z-index: 1000;
     }
 
-    /* 펑 터지는 순간 (즉시 100% 백색 -> 서서히 페이드아웃) */
     .explode {
-      animation: flashbang 1.6s ease-out forwards;
+      animation: flashExplode 1.6s ease-out forwards;
     }
 
-    @keyframes flashbang {
+    @keyframes flashExplode {
       0% {
-        opacity: 1; /* 찰나의 순간에 100% 흰색 */
+        opacity: 1;
       }
-      15% {
-        opacity: 1; /* 잠시 잔상 유지 */
+      20% {
+        opacity: 1;
       }
       100% {
-        opacity: 0; /* 서서히 화면 복구 */
+        opacity: 0;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- 아무 스타일도 주지 않은 순정 버튼 태그 -->
+  <!-- 순정 버튼 -->
   <button id="btn">Click me</button>
 
-  <!-- 섬광탄 SVG 요소 -->
+  <!-- 배그 스타일 M84 섬광탄 SVG -->
   <div id="flashbang">
-    <svg width="70" height="130" viewBox="0 0 70 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- 안전 손잡이 (Spoon) -->
-      <path d="M28 15 C28 6 36 6 38 15 L46 36 C49 44 49 60 49 85 C49 92 46 95 43 95" 
-            stroke="#8E979D" stroke-width="3.5" stroke-linecap="round" fill="none" />
-      
-      <!-- 안전핀 링 (Pull Ring) -->
-      <circle cx="21" cy="20" r="6" stroke="#C0C6C9" stroke-width="2.5" fill="none" />
-      <line x1="26" y1="20" x2="33" y2="20" stroke="#8E979D" stroke-width="2.5" />
-      
-      <!-- 뇌관 및 상단 금속부 -->
-      <rect x="31" y="16" width="10" height="12" rx="2" fill="#535A4B" />
-      <rect x="29" y="26" width="14" height="6" rx="1" fill="#3E4438" />
+    <svg width="90" height="200" viewBox="0 0 150 310" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- 홀 내부 깊이감 그라데이션 -->
+        <radialGradient id="holeDepth" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#0a0a0a" />
+          <stop offset="85%" stop-color="#181a18" />
+          <stop offset="100%" stop-color="#2c3329" />
+        </radialGradient>
+        <!-- 원통형 메탈 하이라이트 -->
+        <linearGradient id="bodyShade" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#243021" />
+          <stop offset="35%" stop-color="#3c4e38" />
+          <stop offset="70%" stop-color="#495f44" />
+          <stop offset="100%" stop-color="#1e281b" />
+        </linearGradient>
+        <linearGradient id="blueBand" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#41555c" />
+          <stop offset="35%" stop-color="#69858e" />
+          <stop offset="70%" stop-color="#7e9fa8" />
+          <stop offset="100%" stop-color="#37484e" />
+        </linearGradient>
+      </defs>
 
-      <!-- 섬광탄 본체 (카키/올리브 드랍 색상) -->
-      <rect x="18" y="32" width="36" height="76" rx="6" fill="#3E4738" />
+      <!-- 1. 최상단 격침/뇌관 뭉치 (블랙/다크그레이) -->
+      <path d="M52 28 H98 V68 H52 Z" fill="#202224" />
+      <path d="M42 22 H102 V28 H42 Z" fill="#2b2e30" />
+      <path d="M46 16 H62 V22 H46 Z" fill="#44484b" />
       
-      <!-- 상/하단 메탈 밴드 림 -->
-      <rect x="18" y="38" width="36" height="3" fill="#2B3226" />
-      <rect x="18" y="101" width="36" height="3" fill="#2B3226" />
+      <!-- 초록색 레버 상단 캡 -->
+      <path d="M88 18 L114 68 H96 L76 18 Z" fill="#44543d" opacity="0.9" />
 
-      <!-- 섬광탄 특유의 가스/빛 방출 구멍 (Vent Holes 3x3) -->
-      <!-- 1열 -->
-      <circle cx="25" cy="52" r="2.8" fill="#1A1E17" />
-      <circle cx="36" cy="52" r="2.8" fill="#1A1E17" />
-      <circle cx="47" cy="52" r="2.8" fill="#1A1E17" />
-      <!-- 2열 -->
-      <circle cx="25" cy="70" r="2.8" fill="#1A1E17" />
-      <circle cx="36" cy="70" r="2.8" fill="#1A1E17" />
-      <circle cx="47" cy="70" r="2.8" fill="#1A1E17" />
-      <!-- 3열 -->
-      <circle cx="25" cy="88" r="2.8" fill="#1A1E17" />
-      <circle cx="36" cy="88" r="2.8" fill="#1A1E17" />
-      <circle cx="47" cy="88" r="2.8" fill="#1A1E17" />
+      <!-- 2. 상단 대형 육각 너트 (Hex Nut) -->
+      <!-- 좌측면 -->
+      <path d="M26 80 L50 72 V112 L26 104 Z" fill="#2d3a2a" />
+      <!-- 중앙 정면 (각인 포함) -->
+      <path d="M50 72 H100 V112 H50 Z" fill="#42553e" />
+      <!-- 우측면 -->
+      <path d="M100 72 L124 80 V104 L100 112 Z" fill="#263223" />
+      <!-- 상/하단 챔퍼(깎인 모서리) 디테일 -->
+      <polygon points="26,80 50,72 100,72 124,80 120,83 100,76 50,76 30,83" fill="#52684d" />
+      <polygon points="26,104 50,112 100,112 124,104 120,101 100,108 50,108 30,101" fill="#1b2419" />
 
-      <!-- 입체감을 위한 빛 반사 하이라이트 & 그림자 -->
-      <rect x="20" y="36" width="3" height="68" rx="1.5" fill="#FFFFFF" opacity="0.12" />
-      <rect x="49" y="36" width="3" height="68" rx="1.5" fill="#000000" opacity="0.25" />
+      <!-- 육각 너트 스텐실 텍스트 -->
+      <text x="75" y="88" fill="#e2e8e0" font-size="8" font-family="monospace" font-weight="bold" text-anchor="middle" letter-spacing="1">P/N</text>
+      <text x="75" y="98" fill="#e2e8e0" font-size="8" font-family="monospace" font-weight="bold" text-anchor="middle">1750-002</text>
+      <text x="38" y="93" fill="#adb8a9" font-size="6" font-family="monospace" text-anchor="middle">M-84</text>
+      <text x="112" y="89" fill="#adb8a9" font-size="5" font-family="monospace" text-anchor="middle">STUN</text>
+      <text x="112" y="96" fill="#adb8a9" font-size="4.5" font-family="monospace" text-anchor="middle">GRENADE</text>
+
+      <!-- 3. 원통형 몸체 본체 (상단 국방색 / 중앙 하늘색 띠 / 하단 국방색) -->
+      <!-- 상단 바디 -->
+      <rect x="36" y="112" width="78" height="42" fill="url(#bodyShade)" />
+      <!-- 중앙 하늘색(배그 섬광탄 핵심 특징) 띠 -->
+      <rect x="36" y="154" width="78" height="46" fill="url(#blueBand)" />
+      <!-- 하단 바디 -->
+      <rect x="36" y="200" width="78" height="42" fill="url(#bodyShade)" />
+
+      <!-- 양옆 파인 홈 실루엣 효과 -->
+      <path d="M36 124 Q41 133 36 142" stroke="#161e14" stroke-width="3" fill="none"/>
+      <path d="M36 166 Q41 177 36 188" stroke="#253236" stroke-width="3" fill="none"/>
+      <path d="M36 212 Q41 221 36 230" stroke="#161e14" stroke-width="3" fill="none"/>
+      <path d="M114 124 Q109 133 114 142" stroke="#161e14" stroke-width="3" fill="none"/>
+      <path d="M114 166 Q109 177 114 188" stroke="#253236" stroke-width="3" fill="none"/>
+      <path d="M114 212 Q109 221 114 230" stroke="#161e14" stroke-width="3" fill="none"/>
+
+      <!-- 4. 가스/섬광 배출 구멍 (6개 타원형 홀) -->
+      <!-- 1열 (상단) -->
+      <ellipse cx="58" cy="133" rx="9" ry="13" fill="url(#holeDepth)" stroke="#222b1f" stroke-width="1.5" />
+      <ellipse cx="92" cy="133" rx="9" ry="13" fill="url(#holeDepth)" stroke="#222b1f" stroke-width="1.5" />
+      <!-- 2열 (중앙 하늘색 띠) -->
+      <ellipse cx="58" cy="177" rx="9" ry="13" fill="url(#holeDepth)" stroke="#2c3a3f" stroke-width="1.5" />
+      <ellipse cx="92" cy="177" rx="9" ry="13" fill="url(#holeDepth)" stroke="#2c3a3f" stroke-width="1.5" />
+      <!-- 3열 (하단) -->
+      <ellipse cx="58" cy="221" rx="9" ry="13" fill="url(#holeDepth)" stroke="#222b1f" stroke-width="1.5" />
+      <ellipse cx="92" cy="221" rx="9" ry="13" fill="url(#holeDepth)" stroke="#222b1f" stroke-width="1.5" />
+
+      <!-- 5. 하단 대형 육각 너트 및 바닥 캡 -->
+      <path d="M26 250 L50 242 V280 L26 272 Z" fill="#2d3a2a" />
+      <path d="M50 242 H100 V280 H50 Z" fill="#42553e" />
+      <path d="M100 242 L124 250 V272 L100 280 Z" fill="#263223" />
+      <polygon points="26,250 50,242 100,242 124,250 120,253 100,246 50,246 30,253" fill="#52684d" />
+      <text x="75" y="260" fill="#a4b3a0" font-size="6" font-family="monospace" text-anchor="middle">U.S. PAT.</text>
+      <text x="75" y="268" fill="#a4b3a0" font-size="6" font-family="monospace" text-anchor="middle">5,107,845</text>
+      
+      <!-- 맨 밑바닥 원형 림 -->
+      <rect x="42" y="280" width="66" height="8" rx="2" fill="#181a18" />
+
+      <!-- 6. 대형 안전핀 은색 링 (Ring) - 배그 섬광탄의 상징적인 왕반지 링 -->
+      <circle cx="88" cy="74" r="42" stroke="#d5dde2" stroke-width="4.5" fill="none" />
+      <circle cx="88" cy="74" r="42" stroke="#9ba4aa" stroke-width="1.5" fill="none" />
+      <path d="M92 34 L92 48" stroke="#bcc5ca" stroke-width="4" stroke-linecap="round"/>
+
+      <!-- 7. 우측으로 길게 내려오는 안전 레버 철사 (하단 주황색 꺾임) -->
+      <path d="M112 48 L142 66 V198 L126 198" 
+            stroke="#e07528" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      <path d="M112 48 L142 66 V145" 
+            stroke="#9ea699" stroke-width="3" stroke-linecap="round" fill="none" />
     </svg>
   </div>
 
-  <!-- 화면 플래시 오버레이 -->
+  <!-- 플래시 오버레이 -->
   <div id="flash-overlay"></div>
 
   <script>
@@ -135,28 +195,48 @@
     let isAnimating = false;
 
     btn.addEventListener('click', () => {
-      if (isAnimating) return; // 중복 클릭 방지
+      if (isAnimating) return;
       isAnimating = true;
 
-      // 애니메이션 클래스 초기화 후 부여
-      flashbang.classList.remove('throw-up');
+      // 회전 방향 무작위 (시계방향 또는 반시계방향)
+      const direction = Math.random() > 0.5 ? 1 : -1;
+      
+      // 360의 배수(똑바로 서는 각도)를 완전히 배제한 무작위 회전각 계산
+      // 최소 1바퀴 반 이상 돌면서, 끝나는 각도는 35도~145도 / 215도~325도 사이의 비스듬한 각도로 결정
+      const baseSpins = 360 * 1.5; // 기본 회전수
+      const randomAwkwardAngle = 40 + Math.random() * 95; // 40도 ~ 135도 사이의 기울어진 각도
+      const totalRotation = (baseSpins + randomAwkwardAngle) * direction;
+
+      // 좌우 비행 궤적 편차 (-70px ~ +70px)
+      const startX = (Math.random() - 0.5) * 50;
+      const endX = (Math.random() - 0.5) * 140;
+
+      // 도달 정점 높이 (화면 하단 기준 48% ~ 64% 사이 무작위)
+      const peakY = (50 + Math.random() * 14) + '%';
+
+      // CSS 변수로 동적 값 주입
+      flashbang.style.setProperty('--start-x', `${startX}px`);
+      flashbang.style.setProperty('--end-x', `${endX}px`);
+      flashbang.style.setProperty('--rand-rot', `${totalRotation}deg`);
+      flashbang.style.setProperty('--peak-y', peakY);
+
+      // 애니메이션 리셋 및 재시작
+      flashbang.classList.remove('tossing');
       overlay.classList.remove('explode');
-      void flashbang.offsetWidth; // 리플로우 강제
+      void flashbang.offsetWidth;
 
-      // 1. 섬광탄 투척 시작
-      flashbang.classList.add('throw-up');
+      flashbang.classList.add('tossing');
 
-      // 2. 던져진 섬광탄이 최고점(0.85초)에 도달했을 때 펑! 터짐
+      // 최고점(0.9초) 도달 시 플래시 폭발!
       setTimeout(() => {
-        // 섬광탄은 사라지고 화면이 순식간에 하얗게 번쩍임
-        flashbang.classList.remove('throw-up');
+        flashbang.classList.remove('tossing');
         overlay.classList.add('explode');
-      }, 850);
+      }, 900);
 
-      // 3. 플래시 효과 종료 후 상태 원복
+      // 전체 이펙트 종료 후 재클릭 가능 상태 복구
       setTimeout(() => {
         isAnimating = false;
-      }, 2450);
+      }, 2500);
     });
   </script>
 </body>
