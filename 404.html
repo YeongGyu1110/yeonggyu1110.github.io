@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 - Page Not Found</title>
+  
+  <!-- Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            background: '#09090b',
+            foreground: '#fafafa',
+            muted: '#71717a',
+            border: '#27272a',
+            card: '#121215',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* shadcn 풍의 서브틀 그리드 & 글로우 배경 */
+    .bg-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+    .radial-glow {
+      background: radial-gradient(circle at 50% 45%, rgba(120, 119, 198, 0.07), transparent 60%);
+    }
+  </style>
+</head>
+<body class="bg-background text-foreground antialiased min-h-screen flex flex-col justify-between selection:bg-zinc-800 selection:text-zinc-100 relative p-6">
+
+  <!-- 은은한 배경 효과 -->
+  <div class="fixed inset-0 bg-grid pointer-events-none"></div>
+  <div class="fixed inset-0 radial-glow pointer-events-none"></div>
+
+  <!-- 상단 여백 밸런스 -->
+  <div class="w-full h-8"></div>
+
+  <!-- 메인 404 영역 -->
+  <main class="w-full max-w-lg mx-auto text-center relative z-10 my-auto py-8">
+    
+    <!-- shadcn Badge 컴포넌트 -->
+    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-zinc-900 border border-border text-zinc-300 mb-6 shadow-sm">
+      <i data-lucide="compass" class="w-3.5 h-3.5 text-zinc-400"></i>
+      <span>404</span>
+      <span class="text-zinc-600">•</span>
+      <span class="text-zinc-400">Not Found</span>
+    </div>
+
+    <!-- 타이틀 -->
+    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-100 mb-4 break-keep">
+      어라, 잘못 찾아오신 것 같아요
+    </h1>
+    
+    <!-- 설명글: 문장 분리 & 단어 단위 줄바꿈(break-keep) 적용 -->
+    <div class="text-sm sm:text-base text-zinc-400 leading-relaxed mb-8 space-y-1 break-keep max-w-md mx-auto">
+      <p>주소가 잘못 입력되었거나 페이지가 이동되었을 수 있어요.</p>
+      <p>아래 버튼을 눌러 메인 화면으로 편하게 이동해 보세요.</p>
+    </div>
+
+    <!-- 액션 버튼 -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+      <!-- 홈으로 이동 (Primary Button) -->
+      <a 
+        href="https://yeonggyu1110.github.io" 
+        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium bg-zinc-100 text-zinc-950 hover:bg-zinc-200 active:scale-[0.98] transition-all duration-150 shadow-sm"
+      >
+        <i data-lucide="home" class="w-4 h-4"></i>
+        <span>메인으로 가기</span>
+      </a>
+
+      <!-- 뒤로 가기 (Outline Button) -->
+      <button 
+        onclick="history.back()" 
+        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium border border-border bg-card/60 text-zinc-300 hover:bg-zinc-900 hover:text-zinc-100 active:scale-[0.98] transition-all duration-150"
+      >
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        <span>이전 화면으로</span>
+      </button>
+    </div>
+
+    <!-- 현재 요청 경로 카드 -->
+    <div class="mt-10 p-3 rounded-lg border border-border/60 bg-zinc-900/40 backdrop-blur text-left flex items-center gap-2.5 max-w-md mx-auto">
+      <i data-lucide="terminal" class="w-3.5 h-3.5 text-zinc-500 shrink-0"></i>
+      <span class="text-xs text-zinc-500 font-mono">경로:</span>
+      <span class="text-xs text-zinc-300 font-mono truncate" id="current-url"></span>
+    </div>
+
+  </main>
+
+  <!-- 푸터: 심플 바로가기 링크 -->
+  <footer class="w-full py-4 relative z-10 flex items-center justify-center gap-6 text-xs text-zinc-500">
+    <a href="https://yeonggyu1110.github.io" class="hover:text-zinc-300 transition-colors">홈</a>
+    <span class="text-zinc-700">•</span>
+    <a href="https://github.com/yeonggyu1110" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-300 transition-colors">GitHub</a>
+  </footer>
+
+  <script>
+    // 아이콘 초기화
+    lucide.createIcons();
+
+    // 현재 진입 경로 표기
+    document.getElementById('current-url').textContent = window.location.pathname;
+  </script>
+</body>
+</html>
