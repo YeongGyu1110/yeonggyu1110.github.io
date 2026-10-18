@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flashbang Animation</title>
+  <style>
+    /* 화면 정중앙 정렬 및 여백 제어 */
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      background-color: #121212; /* 연출을 돋보이게 하기 위한 어두운 배경 */
+    }
+
+    /* 버튼에는 아무런 커스텀 스타일을 적용하지 않음 (기본 브라우저 스타일 유지) */
+
+    /* 섬광탄 컨테이너 */
+    #flashbang {
+      position: fixed;
+      left: 50%;
+      bottom: -180px; /* 화면 아래 바깥에 대기 */
+      transform: translateX(-50%);
+      pointer-events: none; /* 클릭 방해 금지 */
+      display: none;
+      z-index: 999;
+    }
+
+    /* 아래에서 위로 회전하며 던져지는 애니메이션 */
+    .throw-up {
+      display: block !important;
+      animation: toss 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes toss {
+      0% {
+        bottom: -180px;
+        transform: translateX(-50%) rotate(0deg) scale(0.8);
+      }
+      50% {
+        transform: translateX(-50%) rotate(420deg) scale(1.1);
+      }
+      100% {
+        bottom: 55%; /* 화면 위쪽(중앙 살짝 위) 정점 도달 */
+        transform: translateX(-50%) rotate(720deg) scale(1);
+      }
+    }
+
+    /* 섬광탄 터지는 화이트아웃 오버레이 */
+    #flash-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* 펑 터지는 순간 (즉시 100% 백색 -> 서서히 페이드아웃) */
+    .explode {
+      animation: flashbang 1.6s ease-out forwards;
+    }
+
+    @keyframes flashbang {
+      0% {
+        opacity: 1; /* 찰나의 순간에 100% 흰색 */
+      }
+      15% {
+        opacity: 1; /* 잠시 잔상 유지 */
+      }
+      100% {
+        opacity: 0; /* 서서히 화면 복구 */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 아무 스타일도 주지 않은 순정 버튼 태그 -->
+  <button id="btn">Click me</button>
+
+  <!-- 섬광탄 SVG 요소 -->
+  <div id="flashbang">
+    <svg width="70" height="130" viewBox="0 0 70 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- 안전 손잡이 (Spoon) -->
+      <path d="M28 15 C28 6 36 6 38 15 L46 36 C49 44 49 60 49 85 C49 92 46 95 43 95" 
+            stroke="#8E979D" stroke-width="3.5" stroke-linecap="round" fill="none" />
+      
+      <!-- 안전핀 링 (Pull Ring) -->
+      <circle cx="21" cy="20" r="6" stroke="#C0C6C9" stroke-width="2.5" fill="none" />
+      <line x1="26" y1="20" x2="33" y2="20" stroke="#8E979D" stroke-width="2.5" />
+      
+      <!-- 뇌관 및 상단 금속부 -->
+      <rect x="31" y="16" width="10" height="12" rx="2" fill="#535A4B" />
+      <rect x="29" y="26" width="14" height="6" rx="1" fill="#3E4438" />
+
+      <!-- 섬광탄 본체 (카키/올리브 드랍 색상) -->
+      <rect x="18" y="32" width="36" height="76" rx="6" fill="#3E4738" />
+      
+      <!-- 상/하단 메탈 밴드 림 -->
+      <rect x="18" y="38" width="36" height="3" fill="#2B3226" />
+      <rect x="18" y="101" width="36" height="3" fill="#2B3226" />
+
+      <!-- 섬광탄 특유의 가스/빛 방출 구멍 (Vent Holes 3x3) -->
+      <!-- 1열 -->
+      <circle cx="25" cy="52" r="2.8" fill="#1A1E17" />
+      <circle cx="36" cy="52" r="2.8" fill="#1A1E17" />
+      <circle cx="47" cy="52" r="2.8" fill="#1A1E17" />
+      <!-- 2열 -->
+      <circle cx="25" cy="70" r="2.8" fill="#1A1E17" />
+      <circle cx="36" cy="70" r="2.8" fill="#1A1E17" />
+      <circle cx="47" cy="70" r="2.8" fill="#1A1E17" />
+      <!-- 3열 -->
+      <circle cx="25" cy="88" r="2.8" fill="#1A1E17" />
+      <circle cx="36" cy="88" r="2.8" fill="#1A1E17" />
+      <circle cx="47" cy="88" r="2.8" fill="#1A1E17" />
+
+      <!-- 입체감을 위한 빛 반사 하이라이트 & 그림자 -->
+      <rect x="20" y="36" width="3" height="68" rx="1.5" fill="#FFFFFF" opacity="0.12" />
+      <rect x="49" y="36" width="3" height="68" rx="1.5" fill="#000000" opacity="0.25" />
+    </svg>
+  </div>
+
+  <!-- 화면 플래시 오버레이 -->
+  <div id="flash-overlay"></div>
+
+  <script>
+    const btn = document.getElementById('btn');
+    const flashbang = document.getElementById('flashbang');
+    const overlay = document.getElementById('flash-overlay');
+
+    let isAnimating = false;
+
+    btn.addEventListener('click', () => {
+      if (isAnimating) return; // 중복 클릭 방지
+      isAnimating = true;
+
+      // 애니메이션 클래스 초기화 후 부여
+      flashbang.classList.remove('throw-up');
+      overlay.classList.remove('explode');
+      void flashbang.offsetWidth; // 리플로우 강제
+
+      // 1. 섬광탄 투척 시작
+      flashbang.classList.add('throw-up');
+
+      // 2. 던져진 섬광탄이 최고점(0.85초)에 도달했을 때 펑! 터짐
+      setTimeout(() => {
+        // 섬광탄은 사라지고 화면이 순식간에 하얗게 번쩍임
+        flashbang.classList.remove('throw-up');
+        overlay.classList.add('explode');
+      }, 850);
+
+      // 3. 플래시 효과 종료 후 상태 원복
+      setTimeout(() => {
+        isAnimating = false;
+      }, 2450);
+    });
+  </script>
+</body>
+</html>
