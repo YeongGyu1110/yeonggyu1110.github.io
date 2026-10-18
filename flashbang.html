@@ -179,9 +179,9 @@
       // 회전 방향 무작위 (좌 or 우)
       const direction = Math.random() > 0.5 ? 1 : -1;
       
-      // 솟아오르는 동안 딱 한 번만 자연스럽게 회전 (170도 ~ 240도 사이의 무작위 각도)
+      // 솟아오르는 동안 딱 한 번만 자연스럽게 회전 (540도 ~ 720도 사이의 무작위 각도)
       // 정자세(360도)로 서지 않고 기울어진 상태로 날아가도록 설정
-      const randomTumbleAngle = (170 + Math.random() * 70) * direction;
+      const randomTumbleAngle = (540 + Math.random() * 180) * direction;
 
       // 좌우 비행 오차 (-50px ~ +50px)
       const startX = (Math.random() - 0.5) * 40;
