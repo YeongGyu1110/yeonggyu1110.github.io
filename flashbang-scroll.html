@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PUBG Style Flashbang Animation (Scroll)</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #121415;
+        }
+
+        /* 스크롤 트랙: 맨 위 ~ 맨 아래까지 스크롤하는 동안 전체 연출(비행 0.55초 + 기폭 0.1초 + 플래시 1.5초)이 재생된다 */
+        #scroll-track {
+            height: 800vh;
+        }
+
+        /* 섬광탄 요소 */
+        #flashbang {
+            /* 스크립트가 값을 넣기 전 기본값 */
+            --start-x: 0px;
+            --end-x: 0px;
+            --rand-rot: 0deg;
+            --peak-y: 50%;
+
+            position: fixed;
+            left: 50%;
+            bottom: -320px;
+            transform: translateX(-50%);
+            pointer-events: none;
+            z-index: 999;
+            filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.6));
+            /* 시간이 아닌 스크롤 위치로 재생 시점을 정하므로 정지(paused) 상태로 둔다 */
+            animation: tossDirect 0.55s cubic-bezier(0.2, 0.65, 0.4, 1) both paused;
+        }
+
+        /* 기폭 시 미세 팽창은 SVG에 따로 걸어 비행 궤적(transform)과 겹치지 않게 한다 */
+        #flashbang svg {
+            transform-origin: 50% 50%;
+        }
+
+        /* 날아오르는 단일 궤적 애니메이션 (0.55초, 제자리 회전 없음) */
+        @keyframes tossDirect {
+            0% {
+                bottom: -320px;
+                transform: translateX(calc(-50% + var(--start-x))) rotate(0deg) scale(0.8);
+            }
+            100% {
+                bottom: var(--peak-y);
+                /* 솟아오르는 이동과 회전이 동시에 정점에 도달하며 종료 */
+                transform: translateX(calc(-50% + var(--end-x))) rotate(var(--rand-rot)) scale(1);
+            }
+        }
+
+        /* 화면 화이트아웃 플래시 */
+        #flash-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: #ffffff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1000;
+            animation: flashExplode 1.5s ease-out forwards paused;
+        }
+
+        @keyframes flashExplode {
+            0% {
+                opacity: 1; /* 도달 즉시 100% 백색 폭발 */
+            }
+            20% {
+                opacity: 1; /* 번쩍이는 잔상 유지 */
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* 화면이 100% 하얗게 된 뒤에는 섬광탄이 보이지 않는다 */
+        body.exploded #flashbang {
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 스크롤 공간 -->
+    <div id="scroll-track"></div>
+
+    <!-- 배그 스타일 M84 섬광탄 SVG -->
+    <div id="flashbang">
+        <svg width="90" height="200" viewBox="0 0 150 310" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <radialGradient id="holeDepth" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#0a0a0a" />
+            <stop offset="85%" stop-color="#181a18" />
+            <stop offset="100%" stop-color="#2c3329" />
+            </radialGradient>
+            <linearGradient id="bodyShade" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#243021" />
+            <stop offset="35%" stop-color="#3c4e38" />
+            <stop offset="70%" stop-color="#495f44" />
+            <stop offset="100%" stop-color="#1e281b" />
+            </linearGradient>
+            <linearGradient id="blueBand" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#41555c" />
+            <stop offset="35%" stop-color="#69858e" />
+            <stop offset="70%" stop-color="#7e9fa8" />
+            <stop offset="100%" stop-color="#37484e" />
+            </linearGradient>
+        </defs>
+
+        <!-- 최상단 격침/뇌관 -->
+        <path d="M52 28 H98 V68 H52 Z" fill="#202224" />
+        <path d="M42 22 H102 V28 H42 Z" fill="#2b2e30" />
+        <path d="M46 16 H62 V22 H46 Z" fill="#44484b" />
+        <path d="M88 18 L114 68 H96 L76 18 Z" fill="#44543d" opacity="0.9" />
+
+        <!-- 상단 육각 너트 -->
+        <path d="M26 80 L50 72 V112 L26 104 Z" fill="#2d3a2a" />
+        <path d="M50 72 H100 V112 H50 Z" fill="#42553e" />
+        <path d="M100 72 L124 80 V104 L100 112 Z" fill="#263223" />
+        <polygon points="26,80 50,72 100,72 124,80 120,83 100,76 50,76 30,83" fill="#52684d" />
+        <polygon points="26,104 50,112 100,112 124,104 120,101 100,108 50,108 30,101" fill="#1b2419" />
+
+        <text x="75" y="88" fill="#e2e8e0" font-size="8" font-family="monospace" font-weight="bold" text-anchor="middle" letter-spacing="1">P/N</text>
+        <text x="75" y="98" fill="#e2e8e0" font-size="8" font-family="monospace" font-weight="bold" text-anchor="middle">1750-002</text>
+        <text x="38" y="93" fill="#adb8a9" font-size="6" font-family="monospace" text-anchor="middle">M-84</text>
+        <text x="112" y="89" fill="#adb8a9" font-size="5" font-family="monospace" text-anchor="middle">STUN</text>
+        <text x="112" y="96" fill="#adb8a9" font-size="4.5" font-family="monospace" text-anchor="middle">GRENADE</text>
+
+        <!-- 원통 몸체 (상단 국방색 / 중앙 하늘색 띠 / 하단 국방색) -->
+        <rect x="36" y="112" width="78" height="42" fill="url(#bodyShade)" />
+        <rect x="36" y="154" width="78" height="46" fill="url(#blueBand)" />
+        <rect x="36" y="200" width="78" height="42" fill="url(#bodyShade)" />
+
+        <!-- 양옆 파인 홈 -->
+        <path d="M36 124 Q41 133 36 142" stroke="#161e14" stroke-width="3" fill="none"/>
+        <path d="M36 166 Q41 177 36 188" stroke="#253236" stroke-width="3" fill="none"/>
+        <path d="M36 212 Q41 221 36 230" stroke="#161e14" stroke-width="3" fill="none"/>
+        <path d="M114 124 Q109 133 114 142" stroke="#161e14" stroke-width="3" fill="none"/>
+        <path d="M114 166 Q109 177 114 188" stroke="#253236" stroke-width="3" fill="none"/>
+        <path d="M114 212 Q109 221 114 230" stroke="#161e14" stroke-width="3" fill="none"/>
+
+        <!-- 타원형 배출 구멍 6개 -->
+        <ellipse cx="58" cy="133" rx="9" ry="13" fill="url(#holeDepth)" stroke="#222b1f" stroke-width="1.5" />
+        <ellipse cx="92" cy="133" rx="9" ry="13" fill="url(#holeDepth)" stroke="#222b1f" stroke-width="1.5" />
+        <ellipse cx="58" cy="177" rx="9" ry="13" fill="url(#holeDepth)" stroke="#2c3a3f" stroke-width="1.5" />
+        <ellipse cx="92" cy="177" rx="9" ry="13" fill="url(#holeDepth)" stroke="#2c3a3f" stroke-width="1.5" />
+        <ellipse cx="58" cy="221" rx="9" ry="13" fill="url(#holeDepth)" stroke="#222b1f" stroke-width="1.5" />
+        <ellipse cx="92" cy="221" rx="9" ry="13" fill="url(#holeDepth)" stroke="#222b1f" stroke-width="1.5" />
+
+        <!-- 하단 육각 너트 -->
+        <path d="M26 250 L50 242 V280 L26 272 Z" fill="#2d3a2a" />
+        <path d="M50 242 H100 V280 H50 Z" fill="#42553e" />
+        <path d="M100 242 L124 250 V272 L100 280 Z" fill="#263223" />
+        <polygon points="26,250 50,242 100,242 124,250 120,253 100,246 50,246 30,253" fill="#52684d" />
+        <text x="75" y="260" fill="#a4b3a0" font-size="6" font-family="monospace" text-anchor="middle">U.S. PAT.</text>
+        <text x="75" y="268" fill="#a4b3a0" font-size="6" font-family="monospace" text-anchor="middle">5,107,845</text>
+        <rect x="42" y="280" width="66" height="8" rx="2" fill="#181a18" />
+
+        <!-- 대형 안전핀 링 -->
+        <circle cx="88" cy="74" r="42" stroke="#d5dde2" stroke-width="4.5" fill="none" />
+        <circle cx="88" cy="74" r="42" stroke="#9ba4aa" stroke-width="1.5" fill="none" />
+        <path d="M92 34 L92 48" stroke="#bcc5ca" stroke-width="4" stroke-linecap="round"/>
+
+        <!-- 우측 안전 철사 (하단 주황색 팁) -->
+        <path d="M112 48 L142 66 V198 L126 198" stroke="#e07528" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        <path d="M112 48 L142 66 V145" stroke="#9ea699" stroke-width="3" stroke-linecap="round" fill="none" />
+        </svg>
+    </div>
+
+    <!-- 플래시 오버레이 -->
+    <div id="flash-overlay"></div>
+
+    <script>
+        const flashbang = document.getElementById('flashbang');
+        const overlay = document.getElementById('flash-overlay');
+
+        // 연출 시간: 0.55초 비행 → 0.1초 기폭(자체 발광 + 미세 팽창) → 1.5초 플래시
+        const TOSS_MS = 550;
+        const DETONATE_MS = 100;
+        const FLASH_MS = 1500;
+        const TOTAL_MS = TOSS_MS + DETONATE_MS + FLASH_MS;
+
+        // 회전 방향 무작위 (좌 or 우)
+        const direction = Math.random() > 0.5 ? 1 : -1;
+
+        // 솟아오르는 동안 딱 한 번만 자연스럽게 회전 (540도 ~ 720도 사이의 무작위 각도)
+        // 정자세(360도)로 서지 않고 기울어진 상태로 날아가도록 설정
+        const randomTumbleAngle = (540 + Math.random() * 180) * direction;
+
+        // 좌우 비행 오차 (-50px ~ +50px)
+        const startX = (Math.random() - 0.5) * 40;
+        const endX = (Math.random() - 0.5) * 100;
+
+        // 정점 높이 (화면 하단 기준 50% ~ 62%)
+        const peakY = (50 + Math.random() * 12) + '%';
+
+        // CSS 변수 주입
+        flashbang.style.setProperty('--start-x', `${startX}px`);
+        flashbang.style.setProperty('--end-x', `${endX}px`);
+        flashbang.style.setProperty('--rand-rot', `${randomTumbleAngle}deg`);
+        flashbang.style.setProperty('--peak-y', peakY);
+
+        // CSS에 정지 상태로 걸어둔 애니메이션을 가져와 재생 시점을 직접 지정한다
+        const [tossAnim] = flashbang.getAnimations();
+        const [flashAnim] = overlay.getAnimations();
+        const flashbangSvg = flashbang.querySelector('svg');
+
+        function render() {
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = maxScroll > 0 ? Math.min(Math.max(window.scrollY / maxScroll, 0), 1) : 0;
+            const time = progress * TOTAL_MS;
+
+            tossAnim.currentTime = Math.min(time, TOSS_MS);
+
+            // 정점 도달 및 화이트아웃 폭발 구간 (0.55초 ~ 0.65초)
+            // 섬광탄이 정점 자세 그대로(추가 회전 없음) 빛을 발하며, 흰색 오버레이가 0%에서 100%로 채워짐
+            const t = Math.min(Math.max(time - TOSS_MS, 0), DETONATE_MS) / DETONATE_MS;
+
+            // 폭발 시 섬광탄 자체의 발광 및 미세 팽창
+            flashbang.style.filter = `drop-shadow(0 15px 15px rgba(0, 0, 0, 0.6)) brightness(${1 + t * 20})`;
+            flashbangSvg.style.transform = `scale(${1 + t * 0.04})`;
+
+            // 흰색 화면이 차오름 (0 -> 1)
+            overlay.style.opacity = t;
+
+            // 화면이 100% 하얗게 찬 순간부터 섬광탄은 사라지고 플래시 애니메이션이 opacity 1에서 이어받는다.
+            // 그 전에는 플래시 애니메이션 시점이 음수(시작 전)라 적용되지 않고 위의 opacity가 그대로 보인다
+            const exploded = time >= TOSS_MS + DETONATE_MS;
+            document.body.classList.toggle('exploded', exploded);
+            flashAnim.currentTime = time - TOSS_MS - DETONATE_MS;
+        }
+
+        let ticking = false;
+
+        function requestRender() {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                ticking = false;
+                render();
+            });
+        }
+
+        window.addEventListener('scroll', requestRender, { passive: true });
+        window.addEventListener('resize', requestRender);
+        render();
+    </script>
+</body>
+</html>
