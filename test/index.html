@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Gravity Center Registry</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+        }
+
+        .app-layout {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 좌측: 링크 패널 */
+        .left-panel {
+            width: 45%;
+            height: 100%;
+            padding: 80px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid rgba(255, 107, 107, 0.05);
+            background: linear-gradient(90deg, #050505 80%, rgba(5,5,5,0) 100%);
+            z-index: 15;
+            overflow-y: auto;
+        }
+
+        /* 우측: 3D 중력 시뮬레이션 공간 */
+        .right-panel {
+            width: 55%;
+            height: 100%;
+            position: relative;
+            background-color: #050505;
+        }
+
+        #gravity-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        header {
+            margin-bottom: 50px;
+            border-left: 3px solid #ff6b6b;
+            padding-left: 16px;
+        }
+
+        header h1 {
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #ff6b6b;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            font-size: 0.75rem;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        .link-stream {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.15);
+            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 10px 0;
+            cursor: pointer;
+        }
+
+        .link-index {
+            font-size: 0.8rem;
+            font-family: monospace;
+            color: rgba(255, 107, 107, 0.25);
+            margin-right: 20px;
+            transition: color 0.3s;
+        }
+
+        .link-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            transition: text-shadow 0.3s;
+        }
+
+        .link-arrow {
+            font-size: 1.1rem;
+            color: #ff6b6b;
+            margin-left: 12px;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        /* 호버 디자인 */
+        .link-item:hover {
+            color: #ff6b6b;
+            transform: translateX(10px);
+        }
+
+        .link-item:hover .link-index {
+            color: #ff6b6b;
+        }
+
+        .link-item:hover .link-text {
+            text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+
+        .link-item:hover .link-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .left-panel::-webkit-scrollbar {
+            width: 4px;
+        }
+        .left-panel::-webkit-scrollbar-thumb {
+            background: rgba(255, 107, 107, 0.2);
+            border-radius: 2px;
+        }
+
+        @media (max-width: 900px) {
+            body { overflow: auto; }
+            .app-layout { flex-direction: column; height: auto; }
+            .left-panel { width: 100%; height: auto; padding: 40px 24px; border-right: none; }
+            .right-panel { width: 100%; height: 50vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-layout">
+        <div class="left-panel">
+            <header>
+                <h1>System Topology</h1>
+                <p>3D GRAVITY REGISTRY // FLOATING CENTRAL MASS</p>
+            </header>
+
+            <nav class="link-stream">
+                <!-- 11개 플랫폼 링크: 각 중요도에 맞게 data-type 설정 -->
+                <a href="https://github.com" class="link-item" target="_blank" data-type="blackhole">
+                    <span class="link-index">01</span><span class="link-text">GitHub</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://linkedin.com" class="link-item" target="_blank" data-type="pulsar">
+                    <span class="link-index">02</span><span class="link-text">LinkedIn</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://discord.com" class="link-item" target="_blank" data-type="pulsar">
+                    <span class="link-index">03</span><span class="link-text">Discord</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://tistory.com" class="link-item" target="_blank" data-type="pulsar">
+                    <span class="link-index">04</span><span class="link-text">Tistory</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://store.steampowered.com" class="link-item" target="_blank" data-type="star">
+                    <span class="link-index">05</span><span class="link-text">Steam</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://tetr.io" class="link-item" target="_blank" data-type="star">
+                    <span class="link-index">06</span><span class="link-text">Tetr.io</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://youtube.com" class="link-item" target="_blank" data-type="star">
+                    <span class="link-index">07</span><span class="link-text">YouTube</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://instagram.com" class="link-item" target="_blank" data-type="star">
+                    <span class="link-index">08</span><span class="link-text">Instagram</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://x.com" class="link-item" target="_blank" data-type="dwarf">
+                    <span class="link-index">09</span><span class="link-text">Twitter / X</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://open.kakao.com" class="link-item" target="_blank" data-type="dwarf">
+                    <span class="link-index">10</span><span class="link-text">KakaoTalk</span><span class="link-arrow">→</span>
+                </a>
+                <a href="https://namu.wiki" class="link-item" target="_blank" data-type="dwarf">
+                    <span class="link-index">11</span><span class="link-text">Namuwiki</span><span class="link-arrow">→</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="right-panel">
+            <canvas id="gravity-canvas"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gravity-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        function resize() {
+            width = canvas.width = canvas.parentElement.clientWidth;
+            height = canvas.height = canvas.parentElement.clientHeight;
+        }
+        resize();
+        window.addEventListener('resize', () => { resize(); initGrid(); });
+
+        // --- 3D 카메라 투영 설정 (더 극적인 구도를 위해 앵글 조정) ---
+        const pitch = 30 * Math.PI / 180; // ★ 카메라 수직 각도를 30도로 대폭 낮춤
+        const yaw = -35 * Math.PI / 180;  
+        const cameraDist = 750;           // 카메라 거리 조정
+        const fovScale = 750;             // 원근법 수치 조정
+
+        function project(x, y, z) {
+            let x1 = x * Math.cos(yaw) - y * Math.sin(yaw);
+            let y1 = x * Math.sin(yaw) + y * Math.cos(yaw);
+            let z1 = z;
+
+            let x2 = x1;
+            let y2 = y1 * Math.cos(pitch) - z1 * Math.sin(pitch);
+            let z2 = y1 * Math.sin(pitch) + z1 * Math.cos(pitch);
+
+            const perspective = fovScale / (y2 + cameraDist);
+            const screenX = (width * 0.5) + x2 * perspective;
+            const screenY = (height * 0.53) - z2 * perspective; // 수직 구도 정렬
+
+            return { x: screenX, y: screenY };
+        }
+
+        // --- 천체 타입별 세부 스펙 설정 ---
+        const CELESTIAL_CONFIGS = {
+            default:   { type: 'star',      size: 11, gRadius: 80,  gDepth: 45,  floatHeight: 60,  opacity: 0.3 },
+            blackhole: { type: 'blackhole', size: 26, gRadius: 190, gDepth: 160, floatHeight: 70,  opacity: 1.0 }, // ★ 최상급 중요도 (깊이 160)
+            pulsar:    { type: 'pulsar',    size: 18, gRadius: 130, gDepth: 100, floatHeight: 65,  opacity: 0.95 }, // 중상급
+            star:      { type: 'star',      size: 13, gRadius: 95,  gDepth: 65,  floatHeight: 60,  opacity: 0.8 },  // 일반급
+            dwarf:     { type: 'dwarf',     size: 7,  gRadius: 65,  gDepth: 35,  floatHeight: 55,  opacity: 0.65 }  // 하급
+        };
+
+        // --- 중앙 천체(Sphere) 상태 제어 시스템 ---
+        const sphere = {
+            x: 0, y: 0, z: 60,           // 항상 정중앙 고정
+            size: 11,
+            gravityRadius: 80,
+            gravityDepth: 45,
+            floatHeight: 60,
+            currentType: 'star',
+            opacity: 0.3,
+            
+            // 목표값 보간 데이터
+            targetSize: 11,
+            targetGRadius: 80,
+            targetGDepth: 45,
+            targetFloatHeight: 60,
+            targetType: 'star',
+            targetOpacity: 0.3
+        };
+
+        // --- 3D 그리드 설정 ---
+        const gridSpacing = 24;
+        const gridRange = 240;
+        let gridNodes = [];
+
+        function initGrid() {
+            gridNodes = [];
+            for (let y = -gridRange; y <= gridRange; y += gridSpacing) {
+                let row = [];
+                for (let x = -gridRange; x <= gridRange; x += gridSpacing) {
+                    row.push({ origX: x, origY: y, x: x, y: y, z: 0 });
+                }
+                gridNodes.push(row);
+            }
+        }
+        initGrid();
+
+        // --- 호버 및 천체 변화 이벤트 연동 ---
+        const linkItems = document.querySelectorAll('.link-item');
+        linkItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                const type = item.getAttribute('data-type');
+                applyCelestialState(type);
+            });
+        });
+
+        document.querySelector('.left-panel').addEventListener('mouseleave', () => {
+            applyCelestialState('default');
+        });
+
+        function applyCelestialState(stateKey) {
+            const config = CELESTIAL_CONFIGS[stateKey];
+            sphere.targetType = config.type;
+            sphere.targetSize = config.size;
+            sphere.targetGRadius = config.gRadius;
+            sphere.targetGDepth = config.gDepth;
+            sphere.targetFloatHeight = config.floatHeight;
+            sphere.targetOpacity = config.opacity;
+        }
+
+        let time = 0;
+
+        // --- 실시간 업데이트 및 렌더링 루프 ---
+        function animate() {
+            time += 0.025;
+
+            // 1. 물리 속성값 부드러운 전이 (Easing)
+            sphere.size += (sphere.targetSize - sphere.size) * 0.1;
+            sphere.gravityRadius += (sphere.targetGRadius - sphere.gravityRadius) * 0.1;
+            sphere.gravityDepth += (sphere.targetGDepth - sphere.gravityDepth) * 0.1;
+            sphere.floatHeight += (sphere.targetFloatHeight - sphere.floatHeight) * 0.1;
+            sphere.opacity += (sphere.targetOpacity - sphere.opacity) * 0.1;
+            
+            // 천체 타입 즉시 변경 연동
+            if (Math.abs(sphere.size - sphere.targetSize) < 1) {
+                sphere.currentType = sphere.targetType;
+            }
+
+            // 고정된 중앙 궤도 공중 부양 모션
+            sphere.z = sphere.floatHeight + Math.sin(time * 1.6) * 5;
+
+            // 2. 중앙 중력장에 의한 3D 그리드 함몰 왜곡 계산
+            for (let r = 0; r < gridNodes.length; r++) {
+                for (let c = 0; c < gridNodes[r].length; c++) {
+                    const node = gridNodes[r][c];
+                    
+                    // 중앙과의 수평 거리 측정 (x=0, y=0 고정)
+                    const dist = Math.sqrt(node.origX * node.origX + node.origY * node.origY);
+
+                    let targetZ = 0;
+                    if (dist < sphere.gravityRadius) {
+                        const factor = (sphere.gravityRadius - dist) / sphere.gravityRadius;
+                        // 가우시안 곡선 기반 부드러운 함몰 깊이 계산 (z < 0)
+                        targetZ = -sphere.gravityDepth * Math.pow(factor, 2);
+                    }
+                    
+                    node.z += (targetZ - node.z) * 0.15;
+                }
+            }
+
+            // --- 그리기 작업 ---
+            ctx.fillStyle = '#050505';
+            ctx.fillRect(0, 0, width, height);
+
+            // 3. 3D 와이어프레임 렌더링
+            // 가로선 그리기
+            for (let r = 0; r < gridNodes.length; r++) {
+                ctx.beginPath();
+                for (let c = 0; c < gridNodes[r].length; c++) {
+                    const node = gridNodes[r][c];
+                    const pt = project(node.x, node.y, node.z);
+                    if (c === 0) ctx.moveTo(pt.x, pt.y);
+                    else ctx.lineTo(pt.x, pt.y);
+                }
+                ctx.strokeStyle = `rgba(255, 107, 107, ${0.05 + (sphere.opacity * 0.05)})`;
+                ctx.stroke();
+            }
+
+            // 세로선 그리기
+            for (let c = 0; c < gridNodes[0].length; c++) {
+                ctx.beginPath();
+                for (let r = 0; r < gridNodes.length; r++) {
+                    const node = gridNodes[r][c];
+                    const pt = project(node.x, node.y, node.z);
+                    if (r === 0) ctx.moveTo(pt.x, pt.y);
+                    else ctx.lineTo(pt.x, pt.y);
+                }
+                ctx.strokeStyle = `rgba(255, 107, 107, ${0.05 + (sphere.opacity * 0.05)})`;
+                ctx.stroke();
+            }
+
+            // 4. 중앙 부유 천체 개별 그래픽 렌더링
+            const spherePt = project(sphere.x, sphere.y, sphere.z);
+
+            if (sphere.currentType === 'blackhole') {
+                // ★ 블랙홀 테마 비주얼 디자인
+                const diskRadius = sphere.size * 2.3;
+
+                // 회전하는 사건의 지평선 고리 (Accretion Disk) 표현용 아우라
+                const diskGrad = ctx.createRadialGradient(
+                    spherePt.x, spherePt.y, sphere.size * 0.5,
+                    spherePt.x, spherePt.y, diskRadius
+                );
+                diskGrad.addColorStop(0, '#ff6b6b');
+                diskGrad.addColorStop(0.2, '#e05353');
+                diskGrad.addColorStop(0.6, 'rgba(255, 107, 107, 0.25)');
+                diskGrad.addColorStop(1, 'rgba(255, 107, 107, 0)');
+
+                ctx.beginPath();
+                ctx.arc(spherePt.x, spherePt.y, diskRadius, 0, Math.PI * 2);
+                ctx.fillStyle = diskGrad;
+                ctx.fill();
+
+                // 완벽한 어둠을 자랑하는 검은 중심핵 (Event Horizon)
+                ctx.beginPath();
+                ctx.arc(spherePt.x, spherePt.y, sphere.size * 0.75, 0, Math.PI * 2);
+                ctx.fillStyle = '#050505'; // 우주의 공허를 가리키는 검정색
+                ctx.fill();
+                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = '#ff6b6b';
+                ctx.stroke();
+
+            } else if (sphere.currentType === 'pulsar') {
+                // 가성 성운/펄서 테마 비주얼 디자인
+                const pulseSize = sphere.size * (1.3 + Math.sin(time * 6) * 0.15); // 고주파 고동 운동
+
+                const glow = ctx.createRadialGradient(
+                    spherePt.x, spherePt.y, 2,
+                    spherePt.x, spherePt.y, pulseSize * 1.8
+                );
+                glow.addColorStop(0, '#ffffff');
+                glow.addColorStop(0.2, '#ff8b8b');
+                glow.addColorStop(0.6, 'rgba(255, 107, 107, 0.25)');
+                glow.addColorStop(1, 'rgba(255, 107, 107, 0)');
+
+                ctx.beginPath();
+                ctx.arc(spherePt.x, spherePt.y, pulseSize * 1.8, 0, Math.PI * 2);
+                ctx.fillStyle = glow;
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.arc(spherePt.x, spherePt.y, pulseSize, 0, Math.PI * 2);
+                ctx.fillStyle = '#ff6b6b';
+                ctx.fill();
+
+            } else if (sphere.currentType === 'star') {
+                // 기본 일반 항성 테마 디자인
+                const glow = ctx.createRadialGradient(
+                    spherePt.x - sphere.size * 0.3, spherePt.y - sphere.size * 0.3, 1,
+                    spherePt.x, spherePt.y, sphere.size * 1.6
+                );
+                glow.addColorStop(0, '#ffffff');
+                glow.addColorStop(0.3, '#ff8b8b');
+                glow.addColorStop(0.8, '#ff6b6b');
+                glow.addColorStop(1, 'rgba(255, 107, 107, 0)');
+
+                ctx.beginPath();
+                ctx.arc(spherePt.x, spherePt.y, sphere.size * 1.6, 0, Math.PI * 2);
+                ctx.fillStyle = glow;
+                ctx.fill();
+
+            } else if (sphere.currentType === 'dwarf') {
+                // 하급 왜성 테마 디자인
+                ctx.beginPath();
+                ctx.arc(spherePt.x, spherePt.y, sphere.size, 0, Math.PI * 2);
+                ctx.fillStyle = '#ff8b8b';
+                ctx.fill();
+
+                // 미세한 주변 먼지 링 효과
+                ctx.beginPath();
+                ctx.arc(spherePt.x, spherePt.y, sphere.size * 2, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255, 107, 107, 0.2)';
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
