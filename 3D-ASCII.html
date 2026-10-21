@@ -66,9 +66,8 @@
     const effect = new AsciiEffect(renderer, charSet, { invert: true });
     effect.setSize(window.innerWidth, window.innerHeight);
     
-    // 스타일링 (녹색 사이버펑크 텍스트 느낌)
-    effect.domElement.style.color = '#00ff66';
-    effect.domElement.style.backgroundColor = '#000000';
+    effect.domElement.style.color = '#FFFF00';
+    effect.domElement.style.backgroundColor = '#0000AA';
     document.body.appendChild(effect.domElement);
 
     // 6. 마우스 드래그 조작 (OrbitControls)
